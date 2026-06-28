@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0014 added SOP Training & Acknowledgement Foundation to assign SOPs to people, roles, or departments and track acknowledgement status. The implementation remains single-branch, non-AI, and does not introduce LMS complexity, staff scoring, notifications, or electronic signature. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0015 added Daily Operations Checklist Foundation to create checklist templates, generate daily checklist runs, and track completion status for operational discipline. The implementation remains single-branch, non-AI, and does not introduce audit complexity, staff scoring, notifications, or electronic signature. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -18,3 +18,4 @@ TASK-0014 added SOP Training & Acknowledgement Foundation to assign SOPs to peop
 * **TASK-0012**: Improvement Action Foundation
 * **TASK-0013**: SOP Library Foundation
 * **TASK-0014**: SOP Training & Acknowledgement Foundation
+* **TASK-0015**: Daily Operations Checklist Foundation

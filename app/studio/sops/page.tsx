@@ -624,6 +624,12 @@ function SopsPageContent() {
                     >
                       🎓 Giao đào tạo SOP
                     </Link>
+                    <Link
+                      href={`/studio/checklists?sop_id=${selectedSop.id}`}
+                      className="col-span-2 rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block"
+                    >
+                      📋 Tạo checklist từ SOP
+                    </Link>
                   </div>
                 </div>
               </div>

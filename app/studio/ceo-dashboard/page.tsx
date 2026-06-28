@@ -63,12 +63,19 @@ interface SopTrainingAssignment {
   dueDate?: string | null
 }
 
+interface ChecklistRun {
+  id: string
+  runDate: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
   const [improvements, setImprovements] = useState<ImprovementAction[]>([])
   const [sops, setSops] = useState<SopDocument[]>([])
   const [trainingAssignments, setTrainingAssignments] = useState<SopTrainingAssignment[]>([])
+  const [checklistRuns, setChecklistRuns] = useState<ChecklistRun[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -116,6 +123,13 @@ export default function CEODashboardPage() {
           setTrainingAssignments(JSON.parse(storedTraining))
         } else {
           setTrainingAssignments([])
+        }
+
+        const storedChecklistRuns = localStorage.getItem('mvos_checklist_runs')
+        if (storedChecklistRuns) {
+          setChecklistRuns(JSON.parse(storedChecklistRuns))
+        } else {
+          setChecklistRuns([])
         }
 
         setLoading(false)
@@ -261,13 +275,19 @@ export default function CEODashboardPage() {
 
   // SOP counts
   const activeSopsCount = sops.filter(s => s.status === 'active').length
-  const draftSopsCount = sops.filter(s => s.status === 'draft').length
 
   // SOP Training counts
   const unconfirmedTrainingCount = trainingAssignments.filter(a => a.status === 'assigned' || a.status === 'in_progress').length
   const overdueTrainingCount = trainingAssignments.filter(a => {
     if (a.status === 'acknowledged' || a.status === 'cancelled' || !a.dueDate) return false
     return new Date(a.dueDate) < new Date(referenceDateStr)
+  }).length
+
+  // Checklist counts
+  const incompleteChecklistsToday = checklistRuns.filter(r => r.runDate === referenceDateStr && r.status !== 'completed' && r.status !== 'cancelled').length
+  const overdueChecklistsCount = checklistRuns.filter(r => {
+    if (r.status === 'completed' || r.status === 'cancelled') return false
+    return new Date(r.runDate) < new Date(referenceDateStr)
   }).length
 
   // Operational Risks list
@@ -308,6 +328,24 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${overdueTrainingCount} phân công đào tạo SOP quá hạn xác nhận!`,
         detail: `Nhân viên cần hoàn thành xác nhận đã đọc hướng dẫn SOP để bảo đảm kỷ luật dịch vụ.`
+      })
+    }
+
+    // Risk: Incomplete checklists today
+    if (incompleteChecklistsToday > 0) {
+      risks.push({
+        type: 'warning',
+        message: `Có ${incompleteChecklistsToday} checklist vận hành hôm nay chưa hoàn thành!`,
+        detail: `Đội ngũ ca trực cần hoàn thành các bước kiểm tra mở ca/đóng ca.`
+      })
+    }
+
+    // Risk: Overdue checklists
+    if (overdueChecklistsCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${overdueChecklistsCount} checklist vận hành quá hạn chưa hoàn thành!`,
+        detail: `Kiểm tra lại kỷ luật đóng ca và bàn giao của ca trước.`
       })
     }
 
@@ -604,10 +642,10 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning, SOP & Training Integration Panel */}
+          {/* Continuous Learning, SOP, Training & Checklist Integration Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập, SOP & Đào tạo
+              🎓 Học tập, SOP & Checklist
             </h3>
             <div className="text-xs space-y-2">
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
@@ -619,16 +657,16 @@ export default function CEODashboardPage() {
                 <span className="font-bold text-green-400">{activeSopsCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">SOP bản nháp:</span>
-                <span className="font-bold text-yellow-500">{draftSopsCount}</span>
-              </div>
-              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
                 <span className="text-foreground/60">Đào tạo chưa xác nhận:</span>
                 <span className="font-bold text-yellow-500">{unconfirmedTrainingCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Đào tạo quá hạn:</span>
-                <span className={`font-bold ${overdueTrainingCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueTrainingCount}</span>
+                <span className="text-foreground/60">Checklist hôm nay chưa xong:</span>
+                <span className={`font-bold ${incompleteChecklistsToday > 0 ? 'text-yellow-500' : 'text-foreground'}`}>{incompleteChecklistsToday}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Checklist quá hạn:</span>
+                <span className={`font-bold ${overdueChecklistsCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueChecklistsCount}</span>
               </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
@@ -652,9 +690,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/sop-training"
-                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem đào tạo SOP
+              </Link>
+              <Link
+                href="/studio/checklists"
+                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem checklist vận hành
               </Link>
             </div>
           </div>
