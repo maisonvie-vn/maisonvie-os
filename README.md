@@ -3,6 +3,10 @@
 > [!IMPORTANT]
 > All frontend user-facing text must be Vietnamese.
 
+## 🗺️ Project Roadmap
+- **Sprint 1: Enterprise Architecture Foundation** - 🟡 *In Progress*
+- **Sprint 0.1: Foundation Tasks** - 🟢 *Completed*
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

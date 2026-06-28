@@ -3,6 +3,7 @@ export const vi = {
   dashboard: 'Bảng điều khiển',
   documents: 'Tài liệu',
   sop: 'Quy trình vận hành',
+  architecture: 'Kiến trúc',
   admin: 'Quản trị',
   settings: 'Cài đặt',
 

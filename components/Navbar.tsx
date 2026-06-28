@@ -12,6 +12,7 @@ export function Navbar() {
     { name: vi.dashboard, href: '/dashboard' },
     { name: vi.documents, href: '/documents' },
     { name: vi.sop, href: '/sop' },
+    { name: vi.architecture, href: '/architecture' },
     { name: vi.admin, href: '/admin' },
   ]
 
