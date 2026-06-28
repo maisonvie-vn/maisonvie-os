@@ -4,6 +4,7 @@ export const vi = {
   documents: 'Tài liệu',
   sop: 'Quy trình vận hành',
   architecture: 'Kiến trúc',
+  studio: 'Studio',
   admin: 'Quản trị',
   settings: 'Cài đặt',
 
@@ -22,11 +23,25 @@ export const vi = {
   department: 'Bộ phận',
   createdAt: 'Ngày tạo',
   updatedAt: 'Ngày cập nhật',
+  priority: 'Mức ưu tiên',
+  progress: 'Tiến độ',
 
   // Status values
   approved: 'Đã duyệt',
   draft: 'Bản nháp',
   pendingReview: 'Chờ duyệt',
+  inProgress: 'Đang làm',
+  completed: 'Hoàn thành',
+
+  // Studio terms
+  projectOverview: 'Tổng quan dự án',
+  epic: 'Epic',
+  feature: 'Tính năng',
+  spec: 'Đặc tả',
+  task: 'Công việc',
+  adr: 'Quyết định kiến trúc',
+  release: 'Phiên bản phát hành',
+  changeRequest: 'Yêu cầu thay đổi',
 } as const
 
 export type Translations = typeof vi
