@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0026 added Supplier Master Foundation to manage structured supplier data and supplier ingredient capabilities for Maison Vie, including supplier type, status, priority, contact information, invoice/delivery/payment-term notes, quality notes, storage/handling notes, review dates, and optional ingredient capability mapping. The implementation remains single-branch, non-AI, and does not introduce purchase orders, supplier pricing, price history, WAC, food cost, inventory integration, stock movement, invoices, debt tracking, payment tracking, VAT calculation, supplier scoring, or accounting integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0027 added Purchase Request Foundation to manage internal purchase requests and request lines for Maison Vie. Purchase requests include requester, department, priority, needed-by date, status, preferred supplier, and notes. Request lines may reference Ingredient Master and Supplier Master records or use free-text item names. The implementation remains single-branch, non-AI, and does not introduce purchase orders, supplier pricing, price history, WAC, food cost, inventory movement, receiving, invoice, debt, payment, VAT calculation, or accounting integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -30,3 +30,4 @@ TASK-0026 added Supplier Master Foundation to manage structured supplier data an
 * **TASK-0024**: Ingredient Master Foundation
 * **TASK-0025**: Recipe Ingredient Normalization Foundation
 * **TASK-0026**: Supplier Master Foundation
+* **TASK-0027**: Purchase Request Foundation

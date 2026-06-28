@@ -220,6 +220,8 @@ function IngredientsPageContent() {
   const [selectedIngredient, setSelectedIngredient] = useState<IngredientMasterItem | null>(null)
   const [suppliers, setSuppliers] = useState<{ id: string; supplierName: string }[]>([])
   const [capabilities, setCapabilities] = useState<{ id: string; supplierId: string; ingredientMasterId?: string | null; capabilityNote?: string | null }[]>([])
+  const [purchaseRequestLines, setPurchaseRequestLines] = useState<{ id: string; purchaseRequestId: string; ingredientMasterId?: string | null; requestedQuantity?: number | null; requestedUnit?: string | null; status: string }[]>([])
+  const [purchaseRequests, setPurchaseRequests] = useState<{ id: string; requestCode?: string | null; requestDate: string; requestedBy: string }[]>([])
 
   // UX States
   const [loading, setLoading] = useState(true)
@@ -271,6 +273,16 @@ function IngredientsPageContent() {
         const storedCaps = localStorage.getItem('mvos_supplier_capabilities')
         if (storedCaps) {
           setCapabilities(JSON.parse(storedCaps))
+        }
+
+        const storedReqs = localStorage.getItem('mvos_purchase_requests')
+        if (storedReqs) {
+          setPurchaseRequests(JSON.parse(storedReqs))
+        }
+
+        const storedReqLines = localStorage.getItem('mvos_purchase_request_lines')
+        if (storedReqLines) {
+          setPurchaseRequestLines(JSON.parse(storedReqLines))
         }
 
         setLoading(false)
@@ -948,6 +960,28 @@ function IngredientsPageContent() {
                     </div>
                   ) : (
                     <p className="text-[9px] text-foreground/45 italic">Chưa có nhà cung cấp nào liên kết với nguyên liệu này.</p>
+                  )}
+                </div>
+
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Dòng yêu cầu mua liên quan</span>
+                  {purchaseRequestLines.filter(l => l.ingredientMasterId === selectedIngredient.id).length > 0 ? (
+                    <div className="space-y-1 bg-background/30 p-2.5 rounded border border-gold-border/10">
+                      {purchaseRequestLines.filter(l => l.ingredientMasterId === selectedIngredient.id).map((line) => {
+                        const pr = purchaseRequests.find(r => r.id === line.purchaseRequestId)
+                        return (
+                          <div key={line.id} className="flex justify-between items-center text-[10px] py-0.5 border-b border-gold-border/5 last:border-0">
+                            <div>
+                              <span className="font-bold text-gold">{pr ? pr.requestCode || pr.id : 'PR Line'}</span>
+                              <span className="text-[8px] text-foreground/50 block font-mono">Số lượng: {line.requestedQuantity} {line.requestedUnit}</span>
+                            </div>
+                            <span className="text-[8px] font-semibold text-foreground/60">{line.status}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-foreground/45 italic">Chưa có yêu cầu mua nào liên quan đến nguyên liệu này.</p>
                   )}
                 </div>
 

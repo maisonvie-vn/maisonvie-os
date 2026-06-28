@@ -79,6 +79,16 @@ export interface SupplierIngredientCapability {
   updatedAt: string
 }
 
+export interface PurchaseRequest {
+  id: string
+  requestCode?: string | null
+  requestDate: string
+  requestedBy: string
+  priority: string
+  status: string
+  preferredSupplierId?: string | null
+}
+
 interface IngredientMaster {
   id: string
   ingredientNameVi: string
@@ -185,6 +195,7 @@ const INITIAL_CAPABILITIES: SupplierIngredientCapability[] = [
 function SuppliersPageContent() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([])
   const [capabilities, setCapabilities] = useState<SupplierIngredientCapability[]>([])
+  const [purchaseRequests, setPurchaseRequests] = useState<PurchaseRequest[]>([])
   const [masterIngredients, setMasterIngredients] = useState<IngredientMaster[]>([])
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null)
 
@@ -262,6 +273,11 @@ function SuppliersPageContent() {
         if (storedMaster) {
           loadedIngredients = JSON.parse(storedMaster)
           setMasterIngredients(loadedIngredients)
+        }
+
+        const storedRequests = localStorage.getItem('mvos_purchase_requests')
+        if (storedRequests) {
+          setPurchaseRequests(JSON.parse(storedRequests))
         }
 
         if (loadedSuppliers.length > 0) {
@@ -1082,6 +1098,26 @@ function SuppliersPageContent() {
                       Đăng ký năng lực cung ứng
                     </button>
                   </form>
+                </div>
+
+                {/* Related Purchase Requests */}
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-gold font-serif-cormorant font-bold uppercase tracking-wider block">📋 Yêu cầu mua liên quan</span>
+                  {purchaseRequests.filter(pr => pr.preferredSupplierId === selectedSupplier.id || pr.preferredSupplierId === selectedSupplier.supplierCode).length > 0 ? (
+                    <div className="space-y-1 max-h-[150px] overflow-y-auto pr-1">
+                      {purchaseRequests.filter(pr => pr.preferredSupplierId === selectedSupplier.id || pr.preferredSupplierId === selectedSupplier.supplierCode).map((pr) => (
+                        <div key={pr.id} className="flex justify-between items-center text-[10px] bg-background/30 p-2 rounded border border-gold-border/10">
+                          <div>
+                            <span className="font-bold text-foreground">{pr.requestCode || pr.id}</span>
+                            <span className="text-[8px] text-foreground/50 block font-mono">{pr.requestDate}</span>
+                          </div>
+                          <span className="text-[8px] font-semibold text-gold-hover">{pr.status}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-foreground/45 italic">Chưa có yêu cầu mua nào liên quan đến nhà cung cấp này.</p>
+                  )}
                 </div>
 
                 {/* State Actions for Supplier */}

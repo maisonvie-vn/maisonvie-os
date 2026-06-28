@@ -60,6 +60,7 @@ export const vi = {
   recipeMenu: 'Công thức',
   normalizationMenu: 'Chuẩn hóa công thức',
   supplierMenu: 'Nhà cung cấp',
+  purchaseRequestMenu: 'Yêu cầu mua',
 } as const
 
 export type Translations = typeof vi

@@ -129,6 +129,12 @@ interface Supplier {
   priority: string
 }
 
+interface PurchaseRequestHeader {
+  id: string
+  priority: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -146,6 +152,7 @@ export default function CEODashboardPage() {
   const [ingredients, setIngredients] = useState<IngredientMasterItem[]>([])
   const [recipeLines, setRecipeLines] = useState<RecipeIngredientLine[]>([])
   const [suppliers, setSuppliers] = useState<Supplier[]>([])
+  const [purchaseRequests, setPurchaseRequests] = useState<PurchaseRequestHeader[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -270,6 +277,13 @@ export default function CEODashboardPage() {
           setSuppliers(JSON.parse(storedSups))
         } else {
           setSuppliers([])
+        }
+
+        const storedReqs = localStorage.getItem('mvos_purchase_requests')
+        if (storedReqs) {
+          setPurchaseRequests(JSON.parse(storedReqs))
+        } else {
+          setPurchaseRequests([])
         }
 
         setLoading(false)
@@ -465,6 +479,10 @@ export default function CEODashboardPage() {
   // Supplier counts
   const activeSuppliersCount = suppliers.filter(s => s.status === 'active').length
   const strategicSuppliersCount = suppliers.filter(s => s.priority === 'strategic').length
+
+  // Purchase Request counts
+  const reviewingRequestsCount = purchaseRequests.filter(r => r.status === 'reviewing').length
+  const urgentRequestsCount = purchaseRequests.filter(r => r.priority === 'urgent').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -941,6 +959,14 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Nhà cung cấp chiến lược:</span>
                 <span className="font-bold text-purple-400">{strategicSuppliersCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Yêu cầu mua đang xem xét:</span>
+                <span className="font-bold text-yellow-500">{reviewingRequestsCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Yêu cầu mua khẩn cấp:</span>
+                <span className="font-bold text-red-400">{urgentRequestsCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -1023,9 +1049,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/suppliers"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem nhà cung cấp
+              </Link>
+              <Link
+                href="/studio/purchase-requests"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem danh mục nhà cung cấp
+                Xem yêu cầu mua hàng
               </Link>
             </div>
           </div>
