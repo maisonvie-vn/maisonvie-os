@@ -1,18 +1,22 @@
-# 🤖 MVOS AI Development Rules
+# 🏛️ MVOS AI Development Rules
 
-This rulebook defines the strict boundaries, architectural patterns, and execution constraints for autonomous AI agents and language models contributing code to the **Maison Vie Operating System (MVOS)**.
+Autonomous AI agents and language models contributing code to the **Maison Vie Operating System (MVOS)** must strictly adhere to the following 10 commandments:
+
+1. **Never redesign architecture.** Keep existing routing structures, client builders, and file configurations intact.
+2. **Never rename business entities.** Keep names of tables, properties, departments, and roles consistent with master files.
+3. **Never create new folders unless specified.** Only place files in the existing folders (`/app`, `/components`, `/lib`, `/database`, `/prompts`, `/workflows`, `/agents`, `/docs`).
+4. **Never modify database without migration.** Always document DB updates inside a `.sql` schema file in `/database`.
+5. **Never commit secrets.** Keep keys and credentials in `.env.local` only, documenting structures in `.env.example`.
+6. **Never push directly to production.** Always push code to the repository `main` branch and let GitHub integration deploy it to Vercel.
+7. **Never delete documents.** Retain standard operational guides, rules, and roadmaps without deleting history.
+8. **Always update documentation.** Keep roadmaps, README files, and documentation pages current with implementation changes.
+9. **Always explain commands before execution.** Prior to proposing or executing any shell command, document its function.
+10. **Follow MVOS Specification only.** Implement exactly what is requested without adding unapproved packages or features.
 
 ---
 
-## 1. Safety & Data Lockdown (Zero Data Loss)
-- **Production Restrictions**: AI agents are strictly forbidden from connecting to production Supabase database containers or production endpoints in local development modes.
-- **No Destructive SQL**: Statements containing `DROP DATABASE`, `DROP SCHEMA`, `DROP TABLE`, or `TRUNCATE` are prohibited. Database schema upgrades must use `CREATE TABLE IF NOT EXISTS` with additive modifications only.
-- **Secrets Protocol**: Never commit private variables, tokens, or `.env` files to git. Document variable requirements in `.env.example` and keep credentials inside `.env.local`.
-
----
-
-## 2. Design System & Aesthetics (Neoclassical Dark)
-Every interface rendered by MVOS must adhere to the French Neoclassical layout definitions in [globals.css](file:///e:/maisonvie-os/app/globals.css):
+## 🎨 Design System Ambiance Reference
+All MVOS front-end components must implement the French Neoclassical layout parameters from [globals.css](file:///e:/maisonvie-os/app/globals.css):
 - **Core Hex Codes**:
   - Background (Nền): `#102B2A` (deep forest green)
   - Cards/Panels (Phụ): `#042726` (dark forest green)
@@ -23,20 +27,13 @@ Every interface rendered by MVOS must adhere to the French Neoclassical layout d
 
 ---
 
-## 3. Mandatory Verification Loop
+## 🛠️ Mandatory Verification Loop
 Before proposing a commit or finalizing a task:
-1. **TypeScript & Lint Validation**: Run local build checks to verify zero syntax, type, or styling issues:
+1. **Verification Build**: Run Next.js production builds to verify zero compilation errors:
    ```bash
    npm run build
    ```
-2. **Git Tracking Status**: Check local changes before committing:
+2. **Check Tracking Status**: Inspect untracked or modified files:
    ```bash
    git status
    ```
-
----
-
-## 4. Deployment Pipeline
-All deployments occur through integration pipelines:
-- **GitHub is the Source of Truth**: All verified changes must be pushed to the `main` branch of `https://github.com/maisonvie-vn/maisonvie-os.git`.
-- **Vercel Integration**: Production releases are triggered automatically when commits land on the `main` branch. Direct manual CLI production builds are restricted unless specifically instructed.
