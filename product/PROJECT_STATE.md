@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0029 added Goods Receipt Foundation to manage actual received goods against purchase orders. Goods receipts support received, accepted, rejected, and damaged quantities, issue notes, and status workflows. The implementation remains single-branch, non-AI, and does not introduce stock movements, stock on hand, inventory valuation, WAC, food cost, invoice management, payment tracking, accounting integration, or VAT calculations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0030 added Inventory Movement Foundation to record stock movements (goods received from suppliers, manual adjustments, waste/spoilage, staff meals, and internal usage) without doing valuation, costing, WAC, or food cost calculation. The implementation remains single-branch, non-AI, and does not introduce stock-on-hand tables, costing ledgers, pricing history, VAT calculation, invoice management, payment tracking, accounting integration, or forecasting. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -33,3 +33,4 @@ TASK-0029 added Goods Receipt Foundation to manage actual received goods against
 * **TASK-0027**: Purchase Request Foundation
 * **TASK-0028**: Purchase Order Foundation
 * **TASK-0029**: Goods Receipt Foundation
+* **TASK-0030**: Inventory Movement Foundation

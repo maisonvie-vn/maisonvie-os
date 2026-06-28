@@ -146,6 +146,11 @@ function GoodsReceiptsPageContent() {
     issueNote: string
   }>>({})
   const [editError, setEditError] = useState<string | null>(null)
+  interface InventoryMovementSummary {
+    id: string
+    sourceId?: string | null
+  }
+  const [inventoryMovements, setInventoryMovements] = useState<InventoryMovementSummary[]>([])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -191,6 +196,11 @@ function GoodsReceiptsPageContent() {
 
         if (storedSuppliers) loadedSuppliers = JSON.parse(storedSuppliers)
         setSuppliers(loadedSuppliers)
+
+        const storedMovements = localStorage.getItem('mvos_inventory_movements')
+        if (storedMovements) {
+          setInventoryMovements(JSON.parse(storedMovements))
+        }
 
         if (loadedReceipts.length > 0) {
           const defaultRec = loadedReceipts[0]
@@ -459,6 +469,58 @@ function GoodsReceiptsPageContent() {
 
     localStorage.setItem('mvos_goods_receipts', JSON.stringify(updatedReceipts))
     setReceipts(updatedReceipts)
+  }
+
+  const handleImportToInventory = (rec: GoodsReceipt) => {
+    if (rec.status === 'draft') {
+      alert('Không thể nhập kho từ phiếu nhận hàng nháp.')
+      return
+    }
+    if (rec.status === 'cancelled') {
+      alert('Không thể tạo phiếu nhận từ đơn mua hàng đã hủy.')
+      return
+    }
+
+    const alreadyGenerated = inventoryMovements.some(m => m.sourceId === rec.id)
+    if (alreadyGenerated) {
+      alert('Phiếu nhận hàng này đã được ghi nhận vào kho.')
+      return
+    }
+
+    const items = receiptItems.filter(item => item.goodsReceiptId === rec.id)
+    const validItems = items.filter(item => item.acceptedQuantity > 0)
+
+    if (validItems.length === 0) {
+      alert('Không có dòng mặt hàng nào đạt tiêu chuẩn để nhập kho (số lượng đạt > 0).')
+      return
+    }
+
+    const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16)
+    const newMovements = validItems.map((item, idx) => ({
+      id: `im-${Date.now().toString().slice(-4)}-${idx}`,
+      movementNumber: `IM-${new Date().toISOString().replace(/[-T:]/g, '').slice(0, 8)}-${Date.now().toString().slice(-3)}-${idx}`,
+      ingredientMasterId: item.ingredientMasterId,
+      movementDate: new Date().toISOString().split('T')[0],
+      movementType: 'purchase_receipt',
+      direction: 'in',
+      quantity: item.acceptedQuantity,
+      unit: item.unit || 'kg',
+      sourceType: 'goods_receipt',
+      sourceId: rec.id,
+      sourceLineId: item.id,
+      referenceNumber: rec.receiptNumber,
+      reason: 'Nhập từ phiếu nhận hàng',
+      notes: item.issueNote || rec.notes || null,
+      createdBy: rec.receivedBy || 'Steward Thắng',
+      createdAt: nowStr,
+      updatedAt: nowStr
+    }))
+
+    const updatedMovements = [...inventoryMovements, ...newMovements]
+    localStorage.setItem('mvos_inventory_movements', JSON.stringify(updatedMovements))
+    setInventoryMovements(updatedMovements)
+
+    alert('Biến động kho đã được ghi nhận.')
   }
 
   const getStatusLabel = (s: GoodsReceiptStatus) => {
@@ -850,6 +912,25 @@ function GoodsReceiptsPageContent() {
                     </div>
                   )}
                 </form>
+
+                {/* Import to Inventory Button */}
+                {selectedReceipt.status !== 'draft' && selectedReceipt.status !== 'cancelled' && (
+                  <div className="pt-2">
+                    {inventoryMovements.some(m => m.sourceId === selectedReceipt.id) ? (
+                      <div className="rounded border border-green-500/30 bg-green-500/5 p-2 text-center text-[10px] text-green-400 font-bold">
+                        ✓ Đã ghi nhận biến động kho thành công
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleImportToInventory(selectedReceipt)}
+                        className="w-full rounded bg-green-500 hover:bg-green-600 text-white py-2 text-xs font-bold transition-all text-center shadow"
+                      >
+                        📥 Nhập kho (Ghi nhận biến động)
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 <div className="border-t border-gold-border/20 pt-4 flex flex-col gap-1.5">
                   <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Liên kết module liên quan</span>

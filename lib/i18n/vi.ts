@@ -63,6 +63,7 @@ export const vi = {
   purchaseRequestMenu: 'Yêu cầu mua',
   purchaseOrderMenu: 'Đơn đặt hàng',
   goodsReceiptMenu: 'Phiếu nhận hàng',
+  inventoryMovementMenu: 'Biến động kho',
 } as const
 
 export type Translations = typeof vi
