@@ -870,7 +870,7 @@ function FeedbackPageContent() {
                 {/* Operations links loop */}
                 <div className="border-t border-gold-border/20 pt-4 space-y-2">
                   <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Khép kín chu trình vận hành</span>
-                  <div className="grid gap-2 grid-cols-2">
+                  <div className="grid gap-2 grid-cols-2 mt-2">
                     <Link
                       href={`/studio/learning?feedback_id=${selectedFeedback.id}`}
                       className="rounded border border-gold-border/40 hover:border-gold px-2 py-1.5 text-center text-[10px] text-foreground/75 hover:text-gold transition-all block text-center"
@@ -882,6 +882,12 @@ function FeedbackPageContent() {
                       className="rounded border border-gold-border/40 hover:border-gold px-2 py-1.5 text-center text-[10px] text-foreground/75 hover:text-gold transition-all block text-center"
                     >
                       🛠️ Tạo hành động cải tiến
+                    </Link>
+                    <Link
+                      href={`/studio/recovery?feedback_id=${selectedFeedback.id}`}
+                      className="col-span-2 rounded border border-gold hover:border-gold-hover px-2 py-1.5 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
+                    >
+                      🛡️ Tạo case phục hồi
                     </Link>
                   </div>
                 </div>

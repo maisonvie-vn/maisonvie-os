@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0017 added Guest Feedback Foundation to capture structured guest feedback, complaints, compliments, suggestions, and service issues. Feedback can optionally link to reservations, daily reports, learning events, and improvement actions. The implementation remains single-branch, non-AI, and does not introduce review scraping, automatic replies, full CRM, staff scoring, or external review integrations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0018 added Guest Recovery & Follow-up Foundation to manage structured recovery cases after guest feedback, complaints, incidents, or sensitive service issues. Recovery cases can optionally link to guest feedback, reservations, email drafts, and improvement actions. The implementation remains single-branch, non-AI, and does not introduce automatic replies, CRM complexity, loyalty, payment/refund processing, review scraping, or external integrations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -21,3 +21,4 @@ TASK-0017 added Guest Feedback Foundation to capture structured guest feedback, 
 * **TASK-0015**: Daily Operations Checklist Foundation
 * **TASK-0016**: Manager Daily Report Foundation
 * **TASK-0017**: Guest Feedback Foundation
+* **TASK-0018**: Guest Recovery & Follow-up Foundation

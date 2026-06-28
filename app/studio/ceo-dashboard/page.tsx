@@ -77,6 +77,12 @@ interface DailyReport {
   actionRequired: boolean
 }
 
+interface GuestRecovery {
+  id: string
+  status: string
+  ceoAttentionRequired: boolean
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -85,6 +91,7 @@ export default function CEODashboardPage() {
   const [trainingAssignments, setTrainingAssignments] = useState<SopTrainingAssignment[]>([])
   const [checklistRuns, setChecklistRuns] = useState<ChecklistRun[]>([])
   const [dailyReports, setDailyReports] = useState<DailyReport[]>([])
+  const [recoveryCases, setRecoveryCases] = useState<GuestRecovery[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -146,6 +153,13 @@ export default function CEODashboardPage() {
           setDailyReports(JSON.parse(storedReports))
         } else {
           setDailyReports([])
+        }
+
+        const storedCases = localStorage.getItem('mvos_guest_recovery_cases')
+        if (storedCases) {
+          setRecoveryCases(JSON.parse(storedCases))
+        } else {
+          setRecoveryCases([])
         }
 
         setLoading(false)
@@ -311,6 +325,11 @@ export default function CEODashboardPage() {
   const reportsCeoAttentionCount = dailyReports.filter(r => r.ceoAttentionRequired && r.status !== 'archived').length
   const reportsActionRequiredCount = dailyReports.filter(r => r.actionRequired && r.status !== 'archived').length
 
+  // Recovery Case counts
+  const openRecoveryCasesCount = recoveryCases.filter(c => c.status === 'open' || c.status === 'contacting' || c.status === 'recovery_offered').length
+  const waitingGuestResponseCount = recoveryCases.filter(c => c.status === 'waiting_guest_response').length
+  const recoveryCeoAttentionCount = recoveryCases.filter(c => c.ceoAttentionRequired && c.status !== 'closed' && c.status !== 'archived').length
+
   // Operational Risks list
   const getOperationalRisks = () => {
     const risks = []
@@ -385,6 +404,15 @@ export default function CEODashboardPage() {
         type: 'warning',
         message: `Có ${reportsActionRequiredCount} báo cáo vận hành có hạng mục cần xử lý khắc phục!`,
         detail: `Cần phối hợp FOH/BOH để xử lý sự cố thiết bị hoặc nhân sự.`
+      })
+    }
+
+    // Risk: Recovery cases requiring CEO attention
+    if (recoveryCeoAttentionCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${recoveryCeoAttentionCount} case phục hồi khách hàng cần CEO duyệt phương án bồi thường!`,
+        detail: `Yêu cầu xem xét mức độ ưu tiên và kế hoạch chăm sóc để tránh rủi ro thương hiệu.`
       })
     }
 
@@ -681,10 +709,10 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning, SOP, Training, Checklist & Daily Report Panel */}
+          {/* Continuous Learning, SOP, Training, Checklist, Report & Recovery Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập, SOP, Checklist & Báo cáo
+              🎓 Học tập, SOP & Chăm sóc
             </h3>
             <div className="text-xs space-y-2">
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
@@ -708,8 +736,12 @@ export default function CEODashboardPage() {
                 <span className="font-bold text-gold">{reportsTodayCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Báo cáo cần CEO xem:</span>
-                <span className={`font-bold ${reportsCeoAttentionCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{reportsCeoAttentionCount}</span>
+                <span className="text-foreground/60">Case phục hồi đang mở:</span>
+                <span className="font-bold text-blue-400">{openRecoveryCasesCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Case chờ khách phản hồi:</span>
+                <span className="font-bold text-purple-400">{waitingGuestResponseCount}</span>
               </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
@@ -745,9 +777,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/daily-reports"
-                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem báo cáo ngày
+              </Link>
+              <Link
+                href="/studio/recovery"
+                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem phục hồi khách
               </Link>
             </div>
           </div>
