@@ -130,10 +130,10 @@ const INITIAL_RECIPES: Recipe[] = [
 ]
 
 const INITIAL_INGREDIENTS: RecipeIngredientLine[] = [
-  { id: 'ing-1', recipeId: 'rec-401', lineOrder: 1, ingredientName: 'Tôm hùm nước ngọt', ingredientCategory: 'seafood', quantity: 500, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
+  { id: 'ing-1', recipeId: 'rec-401', lineOrder: 1, ingredientName: 'Tôm hùm nước ngọt', ingredientCategory: 'seafood', quantity: 500, unit: 'g', optional: false, ingredientMasterId: 'ing-master-001', createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
   { id: 'ing-2', recipeId: 'rec-401', lineOrder: 2, ingredientName: 'Cá hồi phi lê', ingredientCategory: 'seafood', quantity: 400, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
   { id: 'ing-3', recipeId: 'rec-401', lineOrder: 3, ingredientName: 'Cá chẽm phi lê', ingredientCategory: 'seafood', quantity: 400, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
-  { id: 'ing-4', recipeId: 'rec-401', lineOrder: 4, ingredientName: 'Nghêu tươi', ingredientCategory: 'seafood', quantity: 500, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
+  { id: 'ing-4', recipeId: 'rec-401', lineOrder: 4, ingredientName: 'Nghêu tươi', ingredientCategory: 'seafood', quantity: 500, unit: 'g', optional: false, ingredientMasterId: 'ing-master-004', createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
   { id: 'ing-5', recipeId: 'rec-401', lineOrder: 5, ingredientName: 'Cà chua chín', ingredientCategory: 'vegetable', quantity: 300, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
   { id: 'ing-6', recipeId: 'rec-401', lineOrder: 6, ingredientName: 'Nhụy hoa nghệ tây (Saffron)', ingredientCategory: 'spice', quantity: 1, unit: 'g', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' },
   { id: 'ing-7', recipeId: 'rec-401', lineOrder: 7, ingredientName: 'Dầu ô liu nguyên chất', ingredientCategory: 'spice', quantity: 50, unit: 'ml', optional: false, createdAt: '2026-01-01 10:00', updatedAt: '2026-06-28 10:00' }

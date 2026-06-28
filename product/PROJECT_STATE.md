@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0033 added WAC Unit Cost Foundation to compute Weighted Average Cost (WAC) per ingredient based on accepted goods receipts and unit conversions. The implementation remains single-branch, non-AI, and does not calculate recipe cost, menu food cost, accounting COGS, or gross profit margin, and does not integrate invoice/payment workflows or multi-branch code. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0034 added Recipe Costing Foundation to calculate theoretical costing per recipe. It uses recipe ingredient lines, normalization mappings, unit conversions, and latest WAC to calculate theoretical cost per recipe and portion. The implementation remains single-branch, non-AI, and does not determine menu item prices, POS deductions, gross profit, actual food cost, or accounting COGS. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -37,3 +37,4 @@ TASK-0033 added WAC Unit Cost Foundation to compute Weighted Average Cost (WAC) 
 * **TASK-0031**: Inventory Stock Balance Foundation
 * **TASK-0032**: Unit Conversion Foundation
 * **TASK-0033**: WAC Unit Cost Foundation
+* **TASK-0034**: Recipe Costing Foundation
