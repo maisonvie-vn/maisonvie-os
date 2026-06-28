@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0011 established the MVOS Architecture Governance Foundation, including RFC status rules, decision logging, and implementation gating. RFC-0010 remains Proposed and multi-branch implementation remains blocked until owner approval. No runtime code, database schema, migration, or workflow behavior was changed.
+TASK-0013 added SOP Library Foundation to store and manage basic operating procedures for Maison Vie. SOPs can be categorized, versioned, assigned an owner, given a status, and optionally linked to improvement actions. The implementation remains single-branch, non-AI, and does not introduce approval workflow, staff scoring, or document management complexity. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -15,3 +15,5 @@ TASK-0011 established the MVOS Architecture Governance Foundation, including RFC
 * **TASK-0009**: Build Continuous Learning Foundation
 * **TASK-0010**: Multi-Branch Readiness RFC (Proposed)
 * **TASK-0011**: RFC Decision Gate & Architecture Governance Foundation
+* **TASK-0012**: Improvement Action Foundation
+* **TASK-0013**: SOP Library Foundation

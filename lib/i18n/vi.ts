@@ -46,6 +46,8 @@ export const vi = {
   changeRequest: 'Yêu cầu thay đổi',
   ceoDashboard: 'Dashboard CEO',
   learningMenu: 'Học tập vận hành',
+  improvementMenu: 'Hành động cải tiến',
+  sopMenu: 'SOP vận hành',
 } as const
 
 export type Translations = typeof vi

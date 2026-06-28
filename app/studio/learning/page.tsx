@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 export type LearningSourceType =
   | "reservation"
@@ -609,6 +610,12 @@ export default function LearningEventsPage() {
                     >
                       Lưu trữ
                     </button>
+                    <Link
+                      href={`/studio/improvements?learning_event_id=${selectedEvent.id}`}
+                      className="col-span-2 rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block"
+                    >
+                      ➕ Tạo hành động cải tiến
+                    </Link>
                   </div>
                 </div>
               </div>

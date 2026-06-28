@@ -43,9 +43,24 @@ interface EmailMessage {
   draft?: DraftReply
 }
 
+interface ImprovementAction {
+  id: string
+  title: string
+  status: string
+  dueDate?: string | null
+}
+
+interface SopDocument {
+  id: string
+  title: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
+  const [improvements, setImprovements] = useState<ImprovementAction[]>([])
+  const [sops, setSops] = useState<SopDocument[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -73,6 +88,21 @@ export default function CEODashboardPage() {
         } else {
           setEmails([])
         }
+
+        const storedImps = localStorage.getItem('mvos_improvements')
+        if (storedImps) {
+          setImprovements(JSON.parse(storedImps))
+        } else {
+          setImprovements([])
+        }
+
+        const storedSops = localStorage.getItem('mvos_sops')
+        if (storedSops) {
+          setSops(JSON.parse(storedSops))
+        } else {
+          setSops([])
+        }
+
         setLoading(false)
       } catch {
         setError('Không thể tải dữ liệu vận hành từ bộ nhớ cục bộ.')
@@ -207,6 +237,17 @@ export default function CEODashboardPage() {
   const countNeedsRevision = emails.filter(e => e.draft?.status === 'Needs Revision').length
   const countSent = emails.filter(e => e.status === 'Sent' || e.draft?.status === 'Marked As Sent').length
 
+  // Improvement actions counts
+  const openImprovementsCount = improvements.filter(a => a.status === 'open' || a.status === 'in_progress' || a.status === 'blocked').length
+  const overdueImprovementsCount = improvements.filter(a => {
+    if (a.status === 'completed' || a.status === 'cancelled' || !a.dueDate) return false
+    return new Date(a.dueDate) < new Date(referenceDateStr)
+  }).length
+
+  // SOP counts
+  const activeSopsCount = sops.filter(s => s.status === 'active').length
+  const draftSopsCount = sops.filter(s => s.status === 'draft').length
+
   // Operational Risks list
   const getOperationalRisks = () => {
     const risks = []
@@ -227,6 +268,15 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${pendingReviewEmails.length} email nháp đang chờ duyệt trả lời!`,
         detail: `Cần phản hồi kịp thời để xác nhận yêu cầu của khách.`
+      })
+    }
+
+    // Risk: Overdue improvement actions
+    if (overdueImprovementsCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${overdueImprovementsCount} hành động cải tiến quá hạn xử lý!`,
+        detail: `Cần đôn đốc bộ phận phụ trách giải quyết các bài học kinh nghiệm vận hành.`
       })
     }
 
@@ -523,20 +573,49 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning Integration Panel */}
+          {/* Continuous Learning & SOP Integration Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập vận hành
+              🎓 Học tập, Cải tiến & SOP
             </h3>
-            <p className="text-xs text-foreground/80 leading-relaxed font-sans">
-              Xem các bài học và hành động cải tiến đang mở từ sự cố thực tế.
-            </p>
-            <Link
-              href="/studio/learning"
-              className="inline-block rounded border border-gold/40 hover:border-gold px-4 py-2 text-center text-xs font-semibold text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all w-full"
-            >
-              Truy cập Nhật ký Học tập →
-            </Link>
+            <div className="text-xs space-y-2">
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Hành động cải tiến đang mở:</span>
+                <span className="font-bold text-gold">{openImprovementsCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Hành động quá hạn:</span>
+                <span className={`font-bold ${overdueImprovementsCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueImprovementsCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">SOP đang áp dụng:</span>
+                <span className="font-bold text-green-400">{activeSopsCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">SOP bản nháp:</span>
+                <span className="font-bold text-yellow-500">{draftSopsCount}</span>
+              </div>
+            </div>
+            <div className="grid gap-2 grid-cols-3 pt-1 text-[9px] font-semibold text-center">
+              <Link
+                href="/studio/learning"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Nhật ký Học tập
+              </Link>
+              <Link
+                href="/studio/improvements"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Hành động cải tiến
+              </Link>
+              <Link
+                href="/studio/sops"
+                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all"
+              >
+                Thư viện SOP
+              </Link>
+            </div>
           </div>
 
           {/* Operational Risks Panel */}
