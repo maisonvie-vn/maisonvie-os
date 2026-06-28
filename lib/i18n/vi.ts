@@ -50,6 +50,7 @@ export const vi = {
   sopMenu: 'SOP vận hành',
   trainingMenu: 'Đào tạo SOP',
   checklistMenu: 'Checklist vận hành',
+  dailyReportMenu: 'Báo cáo ngày',
 } as const
 
 export type Translations = typeof vi

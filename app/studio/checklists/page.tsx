@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 export type OperationalDepartment =
   | "foh"
@@ -953,6 +954,12 @@ function ChecklistsPageContent() {
                       >
                         Hủy checklist
                       </button>
+                      <Link
+                        href={`/studio/daily-reports?checklist_id=${selectedRun.id}`}
+                        className="col-span-2 rounded border border-gold hover:border-gold-hover px-2 py-1.5 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
+                      >
+                        📝 Tạo báo cáo từ checklist
+                      </Link>
                     </div>
                   </div>
                 </div>

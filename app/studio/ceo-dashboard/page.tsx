@@ -69,6 +69,14 @@ interface ChecklistRun {
   status: string
 }
 
+interface DailyReport {
+  id: string
+  reportDate: string
+  status: string
+  ceoAttentionRequired: boolean
+  actionRequired: boolean
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -76,6 +84,7 @@ export default function CEODashboardPage() {
   const [sops, setSops] = useState<SopDocument[]>([])
   const [trainingAssignments, setTrainingAssignments] = useState<SopTrainingAssignment[]>([])
   const [checklistRuns, setChecklistRuns] = useState<ChecklistRun[]>([])
+  const [dailyReports, setDailyReports] = useState<DailyReport[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -130,6 +139,13 @@ export default function CEODashboardPage() {
           setChecklistRuns(JSON.parse(storedChecklistRuns))
         } else {
           setChecklistRuns([])
+        }
+
+        const storedReports = localStorage.getItem('mvos_daily_reports')
+        if (storedReports) {
+          setDailyReports(JSON.parse(storedReports))
+        } else {
+          setDailyReports([])
         }
 
         setLoading(false)
@@ -290,6 +306,11 @@ export default function CEODashboardPage() {
     return new Date(r.runDate) < new Date(referenceDateStr)
   }).length
 
+  // Daily Report counts
+  const reportsTodayCount = dailyReports.filter(r => r.reportDate === referenceDateStr).length
+  const reportsCeoAttentionCount = dailyReports.filter(r => r.ceoAttentionRequired && r.status !== 'archived').length
+  const reportsActionRequiredCount = dailyReports.filter(r => r.actionRequired && r.status !== 'archived').length
+
   // Operational Risks list
   const getOperationalRisks = () => {
     const risks = []
@@ -346,6 +367,24 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${overdueChecklistsCount} checklist vận hành quá hạn chưa hoàn thành!`,
         detail: `Kiểm tra lại kỷ luật đóng ca và bàn giao của ca trước.`
+      })
+    }
+
+    // Risk: Daily reports requiring CEO attention
+    if (reportsCeoAttentionCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${reportsCeoAttentionCount} báo cáo vận hành ngày cần CEO xem xét khẩn cấp!`,
+        detail: `Được đánh dấu cảnh báo bởi quản lý ca trực để giải quyết sự cố phát sinh.`
+      })
+    }
+
+    // Risk: Daily reports requiring action
+    if (reportsActionRequiredCount > 0) {
+      risks.push({
+        type: 'warning',
+        message: `Có ${reportsActionRequiredCount} báo cáo vận hành có hạng mục cần xử lý khắc phục!`,
+        detail: `Cần phối hợp FOH/BOH để xử lý sự cố thiết bị hoặc nhân sự.`
       })
     }
 
@@ -642,10 +681,10 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning, SOP, Training & Checklist Integration Panel */}
+          {/* Continuous Learning, SOP, Training, Checklist & Daily Report Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập, SOP & Checklist
+              🎓 Học tập, SOP, Checklist & Báo cáo
             </h3>
             <div className="text-xs space-y-2">
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
@@ -665,8 +704,12 @@ export default function CEODashboardPage() {
                 <span className={`font-bold ${incompleteChecklistsToday > 0 ? 'text-yellow-500' : 'text-foreground'}`}>{incompleteChecklistsToday}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Checklist quá hạn:</span>
-                <span className={`font-bold ${overdueChecklistsCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueChecklistsCount}</span>
+                <span className="text-foreground/60">Báo cáo hôm nay:</span>
+                <span className="font-bold text-gold">{reportsTodayCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Báo cáo cần CEO xem:</span>
+                <span className={`font-bold ${reportsCeoAttentionCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{reportsCeoAttentionCount}</span>
               </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
@@ -696,9 +739,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/checklists"
-                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem checklist vận hành
+              </Link>
+              <Link
+                href="/studio/daily-reports"
+                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem báo cáo ngày
               </Link>
             </div>
           </div>

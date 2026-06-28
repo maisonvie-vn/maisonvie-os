@@ -21,6 +21,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     { name: vi.sopMenu, href: '/studio/sops' },
     { name: vi.trainingMenu, href: '/studio/sop-training' },
     { name: vi.checklistMenu, href: '/studio/checklists' },
+    { name: vi.dailyReportMenu, href: '/studio/daily-reports' },
     { name: 'Từ điển doanh nghiệp', href: '/studio/dictionary' },
     { name: 'Yêu cầu thay đổi', href: '/studio/change-requests' },
   ]
