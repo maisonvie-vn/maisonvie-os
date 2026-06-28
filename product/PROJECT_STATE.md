@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0016 added Manager Daily Report Foundation to capture structured daily or shift-based operation reports, including operational summary, department issues, checklist linkage, improvement action linkage, and CEO attention flags. The implementation remains single-branch, non-AI, and does not introduce finance reporting, BI complexity, staff scoring, notifications, or automatic recommendations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0017 added Guest Feedback Foundation to capture structured guest feedback, complaints, compliments, suggestions, and service issues. Feedback can optionally link to reservations, daily reports, learning events, and improvement actions. The implementation remains single-branch, non-AI, and does not introduce review scraping, automatic replies, full CRM, staff scoring, or external review integrations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -20,3 +20,4 @@ TASK-0016 added Manager Daily Report Foundation to capture structured daily or s
 * **TASK-0014**: SOP Training & Acknowledgement Foundation
 * **TASK-0015**: Daily Operations Checklist Foundation
 * **TASK-0016**: Manager Daily Report Foundation
+* **TASK-0017**: Guest Feedback Foundation
