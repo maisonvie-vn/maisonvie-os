@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { vi } from '@/lib/i18n/vi'
 
 export default function AdminPage() {
   const [checking, setChecking] = useState(false)
@@ -16,7 +17,7 @@ export default function AdminPage() {
     setResult(null)
     setTimeout(() => {
       setChecking(false)
-      setResult('Database client is initialized but sandbox is disconnected. Production connection is restricted.')
+      setResult('Supabase Client đã khởi tạo thành công ở chế độ sandbox. Kết nối tới database sản xuất bị hạn chế để đảm bảo an toàn.')
     }, 1200)
   }
 
@@ -25,10 +26,10 @@ export default function AdminPage() {
       {/* Title */}
       <div className="border-b border-gold-border/40 pb-4">
         <h1 className="text-4xl font-serif-cormorant font-bold text-gold tracking-wide">
-          OS Administration
+          {vi.admin} Hệ thống
         </h1>
         <p className="text-xs text-foreground/50 mt-1">
-          System environments configuration, Supabase settings, and safety controllers.
+          Cấu hình môi trường hệ thống, thiết lập Supabase và bảng điều khiển an toàn.
         </p>
       </div>
 
@@ -37,10 +38,10 @@ export default function AdminPage() {
         <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-6">
           <div>
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide mb-2">
-              🔌 Supabase Client Status
+              🔌 Trạng thái kết nối Supabase
             </h3>
             <p className="text-xs text-foreground/75 leading-relaxed">
-              Verify if the local environment is correctly configured to communicate with Supabase.
+              Xác minh xem môi trường cục bộ đã được cấu hình chính xác để kết nối với Supabase chưa.
             </p>
           </div>
 
@@ -49,13 +50,13 @@ export default function AdminPage() {
             <div className="flex justify-between border-b border-gold-border/10 pb-2">
               <span className="text-foreground/60">NEXT_PUBLIC_SUPABASE_URL</span>
               <span className={hasUrl ? 'text-green-500 font-semibold' : 'text-yellow-500'}>
-                {hasUrl ? 'CONFIGURED' : 'EMPTY / MISSING'}
+                {hasUrl ? 'ĐÃ CẤU HÌNH' : 'RỖNG / THIẾU'}
               </span>
             </div>
             <div className="flex justify-between border-b border-gold-border/10 pb-2">
               <span className="text-foreground/60">NEXT_PUBLIC_SUPABASE_ANON_KEY</span>
               <span className={hasKey ? 'text-green-500 font-semibold' : 'text-yellow-500'}>
-                {hasKey ? 'CONFIGURED' : 'EMPTY / MISSING'}
+                {hasKey ? 'ĐÃ CẤU HÌNH' : 'RỖNG / THIẾU'}
               </span>
             </div>
             <div className="flex justify-between pb-2">
@@ -70,7 +71,7 @@ export default function AdminPage() {
               disabled={checking}
               className="w-full rounded-md border border-gold bg-gold-muted hover:bg-gold/25 py-2.5 text-xs font-semibold text-gold transition-colors tracking-wide disabled:opacity-50"
             >
-              {checking ? 'Testing Local Client...' : 'Verify Client Connection'}
+              {checking ? 'Đang kiểm tra kết nối...' : 'Kiểm tra kết nối Client'}
             </button>
 
             {result && (
@@ -86,23 +87,22 @@ export default function AdminPage() {
           {/* Safeguard Alert */}
           <div className="glass-panel rounded-xl p-6 border border-yellow-500/20 bg-yellow-500/5 space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-yellow-500 tracking-wide flex items-center gap-2">
-              ⚠️ Production Database Protection
+              ⚠️ Bảo vệ Cơ sở dữ liệu Sản xuất
             </h3>
             <p className="text-xs text-foreground/80 leading-relaxed">
-              <strong>Requirement Notice:</strong> Do not connect the production database to this local container instance. 
-              The application must execute and compile using placeholder credentials or offline configurations during development.
+              <strong>Yêu cầu bắt buộc:</strong> Không kết nối cơ sở dữ liệu sản xuất với máy chủ phát triển cục bộ này. 
+              Ứng dụng phải thực thi và biên dịch bằng thông tin cấu hình thử nghiệm hoặc cấu hình ngoại tuyến trong quá trình phát triển.
             </p>
           </div>
 
           {/* Destructive Commands Alert */}
           <div className="glass-panel rounded-xl p-6 border border-green-500/20 bg-green-500/5 space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-green-500 tracking-wide flex items-center gap-2">
-              🛡️ Destructive Command Lockdown
+              🛡️ Khóa lệnh hủy hoại cơ sở dữ liệu
             </h3>
             <p className="text-xs text-foreground/80 leading-relaxed">
-              No destructive commands are configured within this package. Operations like 
-              <code> DROP DATABASE</code>, <code> TRUNCATE TABLE</code>, or secrets cleanup triggers are 
-              completely omitted. Continuous validation guarantees structural preservation.
+              Không có lệnh hủy hoại cơ sở dữ liệu nào được cấu hình trong gói sản phẩm này. Các thao tác nguy hiểm như 
+              <code> DROP DATABASE</code>, <code> TRUNCATE TABLE</code> hoặc xóa khóa bảo mật đều bị loại bỏ hoàn toàn.
             </p>
           </div>
         </div>

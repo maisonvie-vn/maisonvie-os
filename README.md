@@ -1,3 +1,8 @@
+# 🏛️ Maison Vie Operating System (MVOS)
+
+> [!IMPORTANT]
+> All frontend user-facing text must be Vietnamese.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

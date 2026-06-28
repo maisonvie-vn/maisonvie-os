@@ -1,39 +1,18 @@
-# 🏛️ MVOS AI Development Rules
+# 🤖 MVOS AI Development Rules
 
-Autonomous AI agents and language models contributing code to the **Maison Vie Operating System (MVOS)** must strictly adhere to the following 10 commandments:
-
-1. **Never redesign architecture.** Keep existing routing structures, client builders, and file configurations intact.
-2. **Never rename business entities.** Keep names of tables, properties, departments, and roles consistent with master files.
-3. **Never create new folders unless specified.** Only place files in the existing folders (`/app`, `/components`, `/lib`, `/database`, `/prompts`, `/workflows`, `/agents`, `/docs`).
-4. **Never modify database without migration.** Always document DB updates inside a `.sql` schema file in `/database`.
-5. **Never commit secrets.** Keep keys and credentials in `.env.local` only, documenting structures in `.env.example`.
-6. **Never push directly to production.** Always push code to the repository `main` branch and let GitHub integration deploy it to Vercel.
-7. **Never delete documents.** Retain standard operational guides, rules, and roadmaps without deleting history.
-8. **Always update documentation.** Keep roadmaps, README files, and documentation pages current with implementation changes.
-9. **Always explain commands before execution.** Prior to proposing or executing any shell command, document its function.
-10. **Follow MVOS Specification only.** Implement exactly what is requested without adding unapproved packages or features.
+This document outlines the strict guidelines and boundaries for AI systems contributing to the **Maison Vie Operating System (MVOS)**.
 
 ---
 
-## 🎨 Design System Ambiance Reference
-All MVOS front-end components must implement the French Neoclassical layout parameters from [globals.css](file:///e:/maisonvie-os/app/globals.css):
-- **Core Hex Codes**:
-  - Background (Nền): `#102B2A` (deep forest green)
-  - Cards/Panels (Phụ): `#042726` (dark forest green)
-  - Text (Chữ): `#ffffff` (pure white text for high contrast readability)
-  - Accents (Accent Brass): `#A8884E` (brass gold tone)
-- **Typography**: Editorial header serif font (`Cormorant Garamond`) + functional clean sans-serif body text (`Inter`).
-- **Styling Styles**: Use subtle borders (`.neo-border`) and glassmorphic blur frames (`.glass-panel`) for dashboard panels.
+## 📋 Core Directives
 
----
-
-## 🛠️ Mandatory Verification Loop
-Before proposing a commit or finalizing a task:
-1. **Verification Build**: Run Next.js production builds to verify zero compilation errors:
-   ```bash
-   npm run build
-   ```
-2. **Check Tracking Status**: Inspect untracked or modified files:
-   ```bash
-   git status
-   ```
+1. **Antigravity Role Limitation**: Antigravity functions strictly as a **Junior Software Engineer**. It is responsible for code implementation, testing, and documentation updates. Architectural decisions are reserved for the Chief Systems Architect.
+2. **Architecture Lock**: Do not redesign or alter the system architecture. Keep existing route handling, page structures, and helper layouts intact.
+3. **No Architecture Decisions**: Do not create or introduce new architectural patterns.
+4. **Entity Isolation**: Do not rename business entities, database tables, properties, or system components.
+5. **Secrets & Security**: Never commit api tokens, passwords, or `.env` files to git. Keep all secrets locally in `.env.local` (which is gitignored).
+6. **No Destructive Database Commands**: Never execute destructive SQL (e.g. `DROP`, `TRUNCATE`) or commit drop statements.
+7. **Frontend Language Policy**: All frontend user-facing interface text must be **100% Vietnamese**.
+8. **Technical Language Policy**: All backend code, database columns, API routes, and schema names must remain in **English**.
+9. **Documentation Maintenance**: Always update roadmaps, specifications indexes, and document catalogs when modifying features.
+10. **Build Verification**: Always run `npm run build` to verify clean compilation and type-safety before committing.

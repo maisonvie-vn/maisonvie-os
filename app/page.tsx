@@ -3,39 +3,39 @@ import Link from 'next/link'
 export default function HomePage() {
   const features = [
     {
-      title: 'Operations Dashboard',
-      description: 'Real-time metrics, guest statistics, active workflows, and system status.',
+      title: 'Bảng điều khiển Vận hành',
+      description: 'Số liệu thời gian thực, thống kê khách hàng, luồng công việc đang hoạt động và trạng thái hệ thống.',
       icon: '📊',
       href: '/dashboard',
     },
     {
-      title: 'System Docs',
-      description: 'Technical and user guides for Maison Vie Operating System architecture.',
+      title: 'Tài liệu Hệ thống',
+      description: 'Hướng dẫn kỹ thuật và quy chuẩn phát triển cho hệ điều hành Maison Vie OS.',
       icon: '📖',
       href: '/docs',
     },
     {
-      title: 'Standard Operating Procedures',
-      description: 'Formal neoclassical villa rules, staff procedures, and dining room protocols.',
+      title: 'Quy trình vận hành tiêu chuẩn',
+      description: 'Quy định biệt thự tân cổ điển chính thức, quy trình nhân viên và giao thức phòng ăn.',
       icon: '🏛️',
       href: '/sop',
     },
     {
-      title: 'OS Administration',
-      description: 'Database configurations, Supabase synchronization, environment checks, and settings.',
+      title: 'Quản trị Hệ thống',
+      description: 'Cấu hình cơ sở dữ liệu, đồng bộ Supabase, kiểm tra môi trường và cài đặt an toàn.',
       icon: '⚙️',
       href: '/admin',
     },
   ]
 
   const folders = [
-    { name: '/app', desc: 'App router pages & route layout handlers' },
-    { name: '/components', desc: 'Shared UI components, cards, lists, & navbars' },
-    { name: '/lib', desc: 'Service clients, utilities, and helper libraries (Supabase)' },
-    { name: '/database', desc: 'DB schemas, migrations, and seed scripts' },
-    { name: '/prompts', desc: 'AI agents templates, System prompt versions' },
-    { name: '/workflows', desc: 'Automated orchestrations & Deno Edge Function routines' },
-    { name: '/agents', desc: 'Autonomous service definitions & executor scripts' },
+    { name: '/app', desc: 'Trang giao diện client & bộ xử lý định tuyến (App router)' },
+    { name: '/components', desc: 'Các khối giao diện dùng chung, thẻ, danh sách & thanh điều hướng' },
+    { name: '/lib', desc: 'Cấu hình dịch vụ bên thứ ba & thư viện hỗ trợ (Supabase Client)' },
+    { name: '/database', desc: 'Cấu trúc cơ sở dữ liệu, mã di chuyển (migration) & dữ liệu mẫu' },
+    { name: '/prompts', desc: 'Biểu mẫu tác nhân AI & các phiên bản hướng dẫn hệ thống' },
+    { name: '/workflows', desc: 'Quy trình tự động hóa & mã kiểm tra Edge Function' },
+    { name: '/agents', desc: 'Mã thực thi & định nghĩa cho tác nhân dịch vụ tự động' },
   ]
 
   return (
@@ -43,15 +43,15 @@ export default function HomePage() {
       {/* Hero section */}
       <section className="text-center space-y-4 max-w-3xl mx-auto py-8">
         <h1 className="text-5xl md:text-6xl font-serif-cormorant font-bold tracking-tight">
-          The French Neoclassical <br />
-          <span className="gold-gradient-text">Villa Operating System</span>
+          Hệ Điều Hành Biệt Thự <br />
+          <span className="gold-gradient-text">Tân Cổ Điển Pháp</span>
         </h1>
         <p className="text-foreground/80 font-serif-cormorant italic text-xl tracking-wider">
           {"\"L'art de vivre et la technologie harmonisée.\""}
         </p>
         <p className="text-foreground/60 text-sm max-w-xl mx-auto font-sans leading-relaxed">
-          Maison Vie OS coordinates guest experiences, reservation routing, automated agent workflows, 
-          and standard operating procedures for our high-end neoclassical restaurant and villa.
+          Maison Vie OS điều phối trải nghiệm khách hàng, định tuyến đặt bàn, quy trình tác nhân tự động 
+          và quy trình vận hành tiêu chuẩn cho biệt thự và nhà hàng tân cổ điển cao cấp.
         </p>
       </section>
 
@@ -75,7 +75,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="text-xs font-semibold text-gold mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform duration-200">
-              Access Module <span>→</span>
+              Truy cập Phân hệ <span>→</span>
             </div>
           </Link>
         ))}
@@ -85,10 +85,10 @@ export default function HomePage() {
       <section className="glass-panel rounded-2xl p-8 border border-gold-border">
         <div className="border-b border-gold-border/40 pb-4 mb-6">
           <h2 className="text-2xl font-serif-cormorant font-bold tracking-wide text-gold">
-            📁 System File Architecture
+            📁 Cấu Trúc Tệp Tin Hệ Thống
           </h2>
           <p className="text-xs text-foreground/50 mt-1">
-            Standard directory mappings configured for Maison Vie OS developer workflow.
+            Sơ đồ ánh xạ thư mục tiêu chuẩn được cấu hình cho quy trình phát triển Maison Vie OS.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

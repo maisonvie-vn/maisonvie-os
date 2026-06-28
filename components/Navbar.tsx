@@ -3,14 +3,16 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { vi } from '@/lib/i18n/vi'
+
 export function Navbar() {
   const pathname = usePathname()
 
   const links = [
-    { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Documents', href: '/documents' },
-    { name: 'SOP', href: '/sop' },
-    { name: 'Admin', href: '/admin' },
+    { name: vi.dashboard, href: '/dashboard' },
+    { name: vi.documents, href: '/documents' },
+    { name: vi.sop, href: '/sop' },
+    { name: vi.admin, href: '/admin' },
   ]
 
   return (
@@ -51,7 +53,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 rounded-full border border-yellow-500/20 bg-yellow-500/5 px-3 py-1 text-xs text-yellow-500">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse" />
-            <span>Local Dev (DB Offline)</span>
+            <span>Bản cục bộ (Không có DB)</span>
           </div>
           
           {/* Mobile Menu Button placeholder */}

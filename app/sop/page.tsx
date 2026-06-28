@@ -1,36 +1,38 @@
+import { vi } from '@/lib/i18n/vi'
+
 export default function SOPPage() {
   const sops = [
     {
       code: 'SOP-01',
-      title: 'VIP Guest Arrival & Reception',
-      role: 'Hostess / Front of House',
+      title: 'Đón Tiếp Khách VIP',
+      role: 'Lễ tân / Front of House',
       steps: [
-        'Acknowledge arrival within 15 seconds with a formal greeting: "Welcome to Maison Vie, [Title/Name]".',
-        'Verify dietary notes and reservation VIP status on Maison Vie OS.',
-        'Escort guests to their assigned private room (e.g., Salon Privé or Le Jardin).',
-        'Offer pre-dinner drink options (French neoclassical champagne selections).'
+        'Chào đón khách hàng trong vòng 15 giây với lời chào trang trọng: "Chào mừng quý khách đến với Maison Vie, [Danh xưng/Tên]".',
+        'Xác nhận ghi chú ăn uống và trạng thái đặt bàn VIP trên hệ thống Maison Vie OS.',
+        'Dẫn khách tới phòng riêng được chỉ định (ví dụ: Salon Privé hoặc Le Jardin).',
+        'Phục vụ các lựa chọn đồ uống khai vị (các dòng sâm panh Pháp cổ điển).'
       ]
     },
     {
       code: 'SOP-02',
-      title: 'Kitchen & Chef Coordination',
-      role: 'Restaurant Manager / Sommelier',
+      title: 'Điều phối Bếp & Đầu bếp',
+      role: 'Quản lý nhà hàng / Chuyên gia rượu',
       steps: [
-        'Coordinate directly with Chef Joel (Bếp trưởng) regarding custom tasting menu changes.',
-        'Log customized allergy lists in the dashboard reservation cards immediately.',
-        'Ensure the kitchen table (L\'Art Culinaire) is cleared and reset 30 minutes before booking time.',
-        'Alert service staff immediately upon Chef\'s notification that course plating is commencing.'
+        'Liên hệ trực tiếp với Bếp trưởng Joel về các thay đổi trong thực đơn nếm thử theo yêu cầu khách.',
+        'Ghi chú danh sách dị ứng của khách vào thẻ đặt bàn trên bảng điều khiển ngay lập tức.',
+        'Đảm bảo bàn ăn đặc biệt (L\'Art Culinaire) được dọn dẹp và chuẩn bị xong 30 phút trước giờ hẹn.',
+        'Thông báo cho nhân viên phục vụ ngay khi Đầu bếp báo hiệu bắt đầu trang trí món ăn lên đĩa.'
       ]
     },
     {
       code: 'SOP-03',
-      title: 'Ambient Controls & Neoclassical Standards',
-      role: 'Operations Lead',
+      title: 'Điều khiển không gian & Tiêu chuẩn cổ điển',
+      role: 'Trưởng bộ phận vận hành',
       steps: [
-        'Set Facade and facade-led light lines to soft warm gold color (matching #C5A55A ambiance) at sunset.',
-        'Background music must remain within classical piano or traditional French acoustic compositions.',
-        'Temperature in private rooms must be maintained at a steady 22°C (71.6°F) at all times.',
-        'Aroma diffusers must be filled with light white-jasmine essential oil.'
+        'Bật hệ thống chiếu sáng mặt tiền sang tông màu vàng ấm (phù hợp với không gian thau/vàng đồng) khi hoàng hôn.',
+        'Nhạc nền chỉ sử dụng nhạc piano cổ điển hoặc các bản nhạc không lời truyền thống của Pháp.',
+        'Nhiệt độ phòng riêng phải được duy trì ổn định ở mức 22°C (71.6°F) trong suốt thời gian hoạt động.',
+        'Máy khuếch tán hương thơm phải được đổ đầy tinh dầu hoa nhài trắng dịu nhẹ.'
       ]
     }
   ]
@@ -40,10 +42,10 @@ export default function SOPPage() {
       {/* Title */}
       <div className="border-b border-gold-border/40 pb-4">
         <h1 className="text-4xl font-serif-cormorant font-bold text-gold tracking-wide">
-          Standard Operating Procedures
+          {vi.sop}
         </h1>
         <p className="text-xs text-foreground/50 mt-1">
-          Formal system guides, villa guest policies, and culinary staff workflows.
+          Hướng dẫn hệ thống, chính sách đón tiếp và quy trình của nhân viên nhà hàng.
         </p>
       </div>
 
@@ -57,7 +59,7 @@ export default function SOPPage() {
                   {sop.code}
                 </span>
                 <span className="text-[10px] text-foreground/50 italic font-mono">
-                  Role: {sop.role}
+                  Vai trò: {sop.role}
                 </span>
               </div>
               <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide">
@@ -72,8 +74,8 @@ export default function SOPPage() {
               </ol>
             </div>
             <div className="border-t border-gold-border/20 pt-4 mt-6 text-[10px] text-foreground/40 font-mono flex items-center justify-between">
-              <span>Status: Active Standard</span>
-              <span>Updated: 2026-06-28</span>
+              <span>Trạng thái: Hoạt động</span>
+              <span>Cập nhật: 2026-06-28</span>
             </div>
           </div>
         ))}
