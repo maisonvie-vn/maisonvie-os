@@ -83,6 +83,13 @@ interface GuestRecovery {
   ceoAttentionRequired: boolean
 }
 
+interface TourGroup {
+  id: string
+  arrivalDate: string
+  status: string
+  operationStatus: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -92,6 +99,7 @@ export default function CEODashboardPage() {
   const [checklistRuns, setChecklistRuns] = useState<ChecklistRun[]>([])
   const [dailyReports, setDailyReports] = useState<DailyReport[]>([])
   const [recoveryCases, setRecoveryCases] = useState<GuestRecovery[]>([])
+  const [tourGroups, setTourGroups] = useState<TourGroup[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -160,6 +168,13 @@ export default function CEODashboardPage() {
           setRecoveryCases(JSON.parse(storedCases))
         } else {
           setRecoveryCases([])
+        }
+
+        const storedTours = localStorage.getItem('mvos_tour_group_bookings')
+        if (storedTours) {
+          setTourGroups(JSON.parse(storedTours))
+        } else {
+          setTourGroups([])
         }
 
         setLoading(false)
@@ -321,14 +336,16 @@ export default function CEODashboardPage() {
   }).length
 
   // Daily Report counts
-  const reportsTodayCount = dailyReports.filter(r => r.reportDate === referenceDateStr).length
   const reportsCeoAttentionCount = dailyReports.filter(r => r.ceoAttentionRequired && r.status !== 'archived').length
   const reportsActionRequiredCount = dailyReports.filter(r => r.actionRequired && r.status !== 'archived').length
 
   // Recovery Case counts
-  const openRecoveryCasesCount = recoveryCases.filter(c => c.status === 'open' || c.status === 'contacting' || c.status === 'recovery_offered').length
-  const waitingGuestResponseCount = recoveryCases.filter(c => c.status === 'waiting_guest_response').length
   const recoveryCeoAttentionCount = recoveryCases.filter(c => c.ceoAttentionRequired && c.status !== 'closed' && c.status !== 'archived').length
+
+  // Tour Group Booking counts
+  const toursTodayCount = tourGroups.filter(t => t.arrivalDate === referenceDateStr).length
+  const toursPreparingCount = tourGroups.filter(t => t.operationStatus === 'preparing').length
+  const toursIssueCount = tourGroups.filter(t => t.operationStatus === 'issue').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -413,6 +430,15 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${recoveryCeoAttentionCount} case phục hồi khách hàng cần CEO duyệt phương án bồi thường!`,
         detail: `Yêu cầu xem xét mức độ ưu tiên và kế hoạch chăm sóc để tránh rủi ro thương hiệu.`
+      })
+    }
+
+    // Risk: Tour groups with issues
+    if (toursIssueCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${toursIssueCount} đoàn tour vận hành gặp sự cố hôm nay!`,
+        detail: `Vui lòng kiểm tra lại ghi chú từ bếp hoặc phản hồi của hướng dẫn viên lữ hành.`
       })
     }
 
@@ -709,10 +735,10 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning, SOP, Training, Checklist, Report & Recovery Panel */}
+          {/* Continuous Learning, SOP, Training, Checklist, Report, Recovery & Tour Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập, SOP & Chăm sóc
+              🎓 Học tập, SOP, Chăm sóc & Đoàn tour
             </h3>
             <div className="text-xs space-y-2">
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
@@ -728,20 +754,16 @@ export default function CEODashboardPage() {
                 <span className="font-bold text-yellow-500">{unconfirmedTrainingCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Checklist hôm nay chưa xong:</span>
-                <span className={`font-bold ${incompleteChecklistsToday > 0 ? 'text-yellow-500' : 'text-foreground'}`}>{incompleteChecklistsToday}</span>
+                <span className="text-foreground/60">Đoàn tour hôm nay:</span>
+                <span className="font-bold text-gold">{toursTodayCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Báo cáo hôm nay:</span>
-                <span className="font-bold text-gold">{reportsTodayCount}</span>
+                <span className="text-foreground/60">Đoàn đang chuẩn bị:</span>
+                <span className="font-bold text-blue-400">{toursPreparingCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Case phục hồi đang mở:</span>
-                <span className="font-bold text-blue-400">{openRecoveryCasesCount}</span>
-              </div>
-              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Case chờ khách phản hồi:</span>
-                <span className="font-bold text-purple-400">{waitingGuestResponseCount}</span>
+                <span className="text-foreground/60">Đoàn tour gặp sự cố:</span>
+                <span className={`font-bold ${toursIssueCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{toursIssueCount}</span>
               </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
@@ -783,9 +805,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/recovery"
-                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem phục hồi khách
+              </Link>
+              <Link
+                href="/studio/tours"
+                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem đoàn tour
               </Link>
             </div>
           </div>

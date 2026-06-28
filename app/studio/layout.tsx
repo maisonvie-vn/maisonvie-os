@@ -24,6 +24,8 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     { name: vi.dailyReportMenu, href: '/studio/daily-reports' },
     { name: vi.feedbackMenu, href: '/studio/feedback' },
     { name: vi.recoveryMenu, href: '/studio/recovery' },
+    { name: vi.partnerMenu, href: '/studio/partners' },
+    { name: vi.tourMenu, href: '/studio/tours' },
     { name: 'Từ điển doanh nghiệp', href: '/studio/dictionary' },
     { name: 'Yêu cầu thay đổi', href: '/studio/change-requests' },
   ]

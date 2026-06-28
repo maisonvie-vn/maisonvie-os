@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0018 added Guest Recovery & Follow-up Foundation to manage structured recovery cases after guest feedback, complaints, incidents, or sensitive service issues. Recovery cases can optionally link to guest feedback, reservations, email drafts, and improvement actions. The implementation remains single-branch, non-AI, and does not introduce automatic replies, CRM complexity, loyalty, payment/refund processing, review scraping, or external integrations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0020 added Tour Group Booking Operations Foundation to manage operational records for tour groups, including agency partner links, optional reservation links, guest count, arrival details, menu notes, allergy notes, guide details, kitchen/service notes, booking status, and operation status. The implementation remains single-branch, non-AI, and does not introduce pricing, VAT/FOC calculation, commission, debt tracking, payment tracking, forecasting, or automatic email sending. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -22,3 +22,5 @@ TASK-0018 added Guest Recovery & Follow-up Foundation to manage structured recov
 * **TASK-0016**: Manager Daily Report Foundation
 * **TASK-0017**: Guest Feedback Foundation
 * **TASK-0018**: Guest Recovery & Follow-up Foundation
+* **TASK-0019**: Travel Agency Partner Foundation
+* **TASK-0020**: Tour Group Booking Operations Foundation

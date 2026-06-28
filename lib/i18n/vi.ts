@@ -53,6 +53,8 @@ export const vi = {
   dailyReportMenu: 'Báo cáo ngày',
   feedbackMenu: 'Phản hồi khách',
   recoveryMenu: 'Phục hồi khách',
+  partnerMenu: 'Đối tác TA',
+  tourMenu: 'Đoàn tour',
 } as const
 
 export type Translations = typeof vi
