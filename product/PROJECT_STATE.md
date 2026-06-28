@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0021 added Private Dining & Event Operations Foundation to manage operational records for private dining, corporate events, birthdays, anniversaries, wine dinners, banquets, and special group events. Event records include optional reservation, partner, and checklist links; guest count; room/setup details; menu, beverage, allergy, decoration, AV, kitchen, and service notes; booking status; and operation status. The implementation remains single-branch, non-AI, and does not introduce pricing, quotation, contract, deposit, payment, debt tracking, forecasting, or automatic email sending. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0022 added Menu Catalog Foundation to manage structured menu catalogs and menu items for Maison Vie, including menu types, status, effective dates, multilingual item names, allergy/dietary notes, service notes, kitchen notes, and display order. The implementation remains single-branch, non-AI, and does not introduce recipes, ingredients, food cost, inventory, pricing, margin, menu performance analytics, or POS integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -25,3 +25,4 @@ TASK-0021 added Private Dining & Event Operations Foundation to manage operation
 * **TASK-0019**: Travel Agency Partner Foundation
 * **TASK-0020**: Tour Group Booking Operations Foundation
 * **TASK-0021**: Private Dining & Event Operations Foundation
+* **TASK-0022**: Menu Catalog Foundation

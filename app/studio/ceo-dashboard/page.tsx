@@ -97,6 +97,16 @@ interface PrivateDiningEvent {
   operationStatus: string
 }
 
+interface MenuCatalog {
+  id: string
+  status: string
+}
+
+interface MenuItem {
+  id: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -108,6 +118,8 @@ export default function CEODashboardPage() {
   const [recoveryCases, setRecoveryCases] = useState<GuestRecovery[]>([])
   const [tourGroups, setTourGroups] = useState<TourGroup[]>([])
   const [privateDiningEvents, setPrivateDiningEvents] = useState<PrivateDiningEvent[]>([])
+  const [menus, setMenus] = useState<MenuCatalog[]>([])
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -190,6 +202,20 @@ export default function CEODashboardPage() {
           setPrivateDiningEvents(JSON.parse(storedEvts))
         } else {
           setPrivateDiningEvents([])
+        }
+
+        const storedMenus = localStorage.getItem('mvos_menu_catalogs')
+        if (storedMenus) {
+          setMenus(JSON.parse(storedMenus))
+        } else {
+          setMenus([])
+        }
+
+        const storedItems = localStorage.getItem('mvos_menu_items')
+        if (storedItems) {
+          setMenuItems(JSON.parse(storedItems))
+        } else {
+          setMenuItems([])
         }
 
         setLoading(false)
@@ -366,6 +392,10 @@ export default function CEODashboardPage() {
   const eventsTodayCount = privateDiningEvents.filter(e => e.eventDate === referenceDateStr).length
   const eventsPreparingCount = privateDiningEvents.filter(e => e.operationStatus === 'preparing').length
   const eventsIssueCount = privateDiningEvents.filter(e => e.operationStatus === 'issue').length
+
+  // Menu Catalog counts
+  const activeMenusCount = menus.filter(m => m.status === 'active').length
+  const activeMenuItemsCount = menuItems.filter(i => i.status === 'active').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -806,6 +836,14 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Sự kiện gặp sự cố:</span>
                 <span className={`font-bold ${eventsIssueCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{eventsIssueCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Thực đơn đang chạy:</span>
+                <span className="font-bold text-green-400">{activeMenusCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Món ăn đang áp dụng:</span>
+                <span className="font-bold text-gold">{activeMenuItemsCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -858,9 +896,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/events"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem sự kiện
+              </Link>
+              <Link
+                href="/studio/menus"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem sự kiện phòng riêng
+                Xem danh mục thực đơn
               </Link>
             </div>
           </div>

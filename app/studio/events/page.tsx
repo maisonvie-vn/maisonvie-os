@@ -157,6 +157,7 @@ function EventsPageContent() {
   const [partners, setPartners] = useState<TravelAgencyPartner[]>([])
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [checklistRuns, setChecklistRuns] = useState<ChecklistRun[]>([])
+  const [menus, setMenus] = useState<{ id: string; menuName: string }[]>([])
   const [selectedEvent, setSelectedEvent] = useState<PrivateDiningEvent | null>(null)
   
   // UX States
@@ -233,6 +234,13 @@ function EventsPageContent() {
         if (storedChecklists) {
           loadedChecklists = JSON.parse(storedChecklists)
           setChecklistRuns(loadedChecklists)
+        }
+
+        const storedMenus = localStorage.getItem('mvos_menu_catalogs')
+        if (storedMenus) {
+          setMenus(JSON.parse(storedMenus))
+        } else {
+          setMenus([{ id: 'menu-1', menuName: 'Set Menu Âu Cổ Điển 1' }])
         }
 
         // Pre-populate partner from query param
@@ -881,14 +889,19 @@ function EventsPageContent() {
 
               <div className="grid gap-4 sm:grid-cols-3">
                 <div className="flex flex-col gap-1">
-                  <label className="text-[10px] text-foreground/60 font-mono">Tên thực đơn / Set menu</label>
-                  <input
-                    type="text"
-                    placeholder="Ví dụ: Set Menu Âu Hải Sản 2..."
+                  <label className="text-[10px] text-foreground/60 font-mono">Thực đơn liên quan</label>
+                  <select
                     value={form.menuName}
                     onChange={(e) => setForm({ ...form, menuName: e.target.value })}
                     className="rounded border border-gold-border/30 bg-background/50 px-3 py-1.5 text-xs text-foreground focus:border-gold focus:outline-none"
-                  />
+                  >
+                    <option value="">-- Chọn thực đơn --</option>
+                    {menus.map((m) => (
+                      <option key={m.id} value={m.menuName}>
+                        {m.menuName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="flex flex-col gap-1">
