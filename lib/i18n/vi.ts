@@ -68,6 +68,7 @@ export const vi = {
   unitConversionMenu: 'Quy đổi đơn vị',
   wacMenu: 'Giá vốn bình quân',
   recipeCostingMenu: 'Giá vốn công thức',
+  menuItemCostingMenu: 'Giá vốn món bán',
 } as const
 
 export type Translations = typeof vi

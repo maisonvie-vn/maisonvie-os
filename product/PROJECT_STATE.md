@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0034 added Recipe Costing Foundation to calculate theoretical costing per recipe. It uses recipe ingredient lines, normalization mappings, unit conversions, and latest WAC to calculate theoretical cost per recipe and portion. The implementation remains single-branch, non-AI, and does not determine menu item prices, POS deductions, gross profit, actual food cost, or accounting COGS. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0035 added Menu Item Costing Foundation to map sellable menu items to one or multiple recipe components (such as main, sauce, side) and calculate theoretical costs based on recipe costing runs. The implementation remains single-branch, non-AI, and does not determine menu prices, profit margins, sales consumption, or accounting COGS. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -38,3 +38,4 @@ TASK-0034 added Recipe Costing Foundation to calculate theoretical costing per r
 * **TASK-0032**: Unit Conversion Foundation
 * **TASK-0033**: WAC Unit Cost Foundation
 * **TASK-0034**: Recipe Costing Foundation
+* **TASK-0035**: Menu Item Costing Foundation
