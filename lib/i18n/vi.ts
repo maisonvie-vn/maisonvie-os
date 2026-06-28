@@ -5,6 +5,7 @@ export const vi = {
   sop: 'Quy trình vận hành',
   architecture: 'Kiến trúc',
   studio: 'Studio',
+  reservationsMenu: 'Đặt bàn',
   admin: 'Quản trị',
   settings: 'Cài đặt',
 

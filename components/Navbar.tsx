@@ -10,6 +10,7 @@ export function Navbar() {
 
   const links = [
     { name: vi.dashboard, href: '/dashboard' },
+    { name: vi.reservationsMenu, href: '/reservations' },
     { name: vi.documents, href: '/documents' },
     { name: vi.sop, href: '/sop' },
     { name: vi.architecture, href: '/architecture' },
