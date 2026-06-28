@@ -6,9 +6,11 @@ import Link from 'next/link'
 import { vi } from '@/lib/i18n/vi'
 
 interface HistoryEntry {
-  status: string
+  previousStatus: string
+  newStatus: string
   time: string
   actor: string
+  note: string
 }
 
 interface NoteEntry {
@@ -46,6 +48,11 @@ export default function ReservationDetailPage() {
   
   // Note inputs
   const [newNote, setNewNote] = useState('')
+  
+  // Status change workflow inputs
+  const [selectedNextStatus, setSelectedNextStatus] = useState('')
+  const [statusChangeNote, setStatusChangeNote] = useState('')
+  const [transitionError, setTransitionError] = useState('')
 
   useEffect(() => {
     const stored = localStorage.getItem('mvos_reservations')
@@ -53,11 +60,11 @@ export default function ReservationDetailPage() {
       const list: Reservation[] = JSON.parse(stored)
       const found = list.find((item) => item.id === id)
       if (found) {
-        // Initialize history and note log if missing
+        // Initialize history with initial record if missing
         if (!found.history) {
           found.history = [
-            { status: 'Draft', time: '2026-06-28 10:00', actor: 'Hệ thống' },
-            { status: found.status, time: '2026-06-28 12:00', actor: 'Lễ tân FOH' }
+            { previousStatus: '-', newStatus: 'Draft', time: '2026-06-28 10:00', actor: 'Hệ thống', note: 'Khởi tạo đặt bàn nháp' },
+            { previousStatus: 'Draft', newStatus: found.status, time: '2026-06-28 12:00', actor: 'Lễ tân FOH', note: 'Duyệt lên danh sách chính thức' }
           ]
         }
         if (!found.internalNotesList) {
@@ -67,6 +74,14 @@ export default function ReservationDetailPage() {
         }
         setRes(found)
         setFormData(found)
+        
+        // Pre-select first allowed status if any
+        const allowed = getAllowedTransitions(found.status)
+        if (allowed.length > 0) {
+          setSelectedNextStatus(allowed[0])
+        } else {
+          setSelectedNextStatus('')
+        }
       }
     }
   }, [id])
@@ -89,22 +104,66 @@ export default function ReservationDetailPage() {
         localStorage.setItem('mvos_reservations', JSON.stringify(list))
         setRes(updatedRes)
         setFormData(updatedRes)
+        
+        // Reset and pre-select next status
+        const allowed = getAllowedTransitions(updatedRes.status)
+        if (allowed.length > 0) {
+          setSelectedNextStatus(allowed[0])
+        } else {
+          setSelectedNextStatus('')
+        }
+        setStatusChangeNote('')
+        setTransitionError('')
       }
     }
   }
 
-  const handleStatusChange = (newStatus: string) => {
-    if (newStatus === res.status) return
+  // Business Rules for Allowed Next Statuses
+  const getAllowedTransitions = (currentStatus: string): string[] => {
+    switch (currentStatus) {
+      case 'Draft':
+        return ['Pending', 'Cancelled']
+      case 'Pending':
+        return ['Confirmed', 'Cancelled']
+      case 'Confirmed':
+        return ['Reminder', 'Arrived', 'Cancelled', 'No Show']
+      case 'Reminder':
+        return ['Arrived', 'Cancelled', 'No Show']
+      case 'Arrived':
+        return ['Dining']
+      case 'Dining':
+        return ['Completed']
+      default:
+        return [] // Completed, Cancelled, No Show cannot move to another status
+    }
+  }
+
+  const handleStatusChangeSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedNextStatus) return
+
+    // Double check transition safety
+    const allowed = getAllowedTransitions(res.status)
+    if (!allowed.includes(selectedNextStatus)) {
+      setTransitionError('Không được phép chuyển trạng thái này')
+      return
+    }
 
     const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16)
     const updatedHistory = [
       ...(res.history || []),
-      { status: newStatus, time: nowStr, actor: 'Quản lý vận hành (FOH)' }
+      {
+        previousStatus: res.status,
+        newStatus: selectedNextStatus,
+        time: nowStr,
+        actor: 'FOH Hostess',
+        note: statusChangeNote || 'Cập nhật trạng thái thủ công'
+      }
     ]
 
     const updatedRes = {
       ...res,
-      status: newStatus,
+      status: selectedNextStatus,
       history: updatedHistory
     }
 
@@ -123,7 +182,7 @@ export default function ReservationDetailPage() {
 
     const updatedRes = {
       ...res,
-      notes: newNote, // Keep legacy notes field sync
+      notes: newNote,
       internalNotesList: updatedNotes
     }
 
@@ -137,7 +196,13 @@ export default function ReservationDetailPage() {
     const nowStr = new Date().toISOString().replace('T', ' ').slice(0, 16)
     const updatedHistory = [
       ...(res.history || []),
-      { status: res.status, time: nowStr, actor: 'Chỉnh sửa hồ sơ' }
+      {
+        previousStatus: res.status,
+        newStatus: res.status,
+        time: nowStr,
+        actor: 'Chỉnh sửa hồ sơ',
+        note: 'Cập nhật thông tin chi tiết đặt bàn'
+      }
     ]
 
     const updatedRes = {
@@ -154,6 +219,7 @@ export default function ReservationDetailPage() {
       case 'Draft': return 'Bản nháp'
       case 'Pending': return 'Chờ duyệt'
       case 'Confirmed': return 'Đã xác nhận'
+      case 'Reminder': return 'Đã nhắc lịch'
       case 'Arrived': return 'Đã đến sảnh'
       case 'Dining': return 'Đang dùng bữa'
       case 'Completed': return 'Hoàn thành'
@@ -171,6 +237,7 @@ export default function ReservationDetailPage() {
       case 'Pending':
       case 'Arrived':
       case 'Dining':
+      case 'Reminder':
         return 'bg-blue-500/10 border border-blue-500/25 text-blue-500'
       case 'Draft':
         return 'bg-yellow-500/10 border border-yellow-500/25 text-yellow-500'
@@ -182,24 +249,22 @@ export default function ReservationDetailPage() {
     }
   }
 
-  const availableStatuses = ['Draft', 'Pending', 'Confirmed', 'Arrived', 'Dining', 'Completed', 'Cancelled', 'No Show']
+  const allowedNext = getAllowedTransitions(res.status)
+
+  // Standard lifecycle for timeline
+  const lifecycle = ['Draft', 'Pending', 'Confirmed', 'Reminder', 'Arrived', 'Dining', 'Completed']
 
   return (
     <div className="space-y-8">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gold-border/40 pb-4 gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-serif-cormorant font-bold text-gold tracking-wide">
-              Hồ sơ: {res.guestName}
-            </h1>
-            <span className={`rounded px-2.5 py-0.5 text-[10px] font-bold tracking-wider ${getStatusClass(res.status)}`}>
-              {getStatusLabel(res.status)}
-            </span>
-          </div>
-          <p className="text-xs text-foreground/50 mt-1">
-            Đăng ký lịch trình, cập nhật trạng thái đón tiếp và ghi chú ẩm thực khách VIP.
-          </p>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-serif-cormorant font-bold text-gold tracking-wide">
+            Hồ sơ: {res.guestName}
+          </h1>
+          <span className={`rounded px-2.5 py-0.5 text-[10px] font-bold tracking-wider ${getStatusClass(res.status)}`}>
+            {getStatusLabel(res.status)}
+          </span>
         </div>
         <div className="flex gap-2">
           <button
@@ -217,9 +282,43 @@ export default function ReservationDetailPage() {
         </div>
       </div>
 
+      {/* Dòng thời gian (Timeline lifecycle status) */}
+      <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
+        <h3 className="text-sm font-semibold text-gold tracking-wider uppercase">
+          📍 Dòng thời gian
+        </h3>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          {lifecycle.map((step, idx) => {
+            const isCurrent = res.status === step
+            const isPast = lifecycle.indexOf(res.status) > idx
+            return (
+              <div key={step} className="flex-1 flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <div className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                    isCurrent 
+                      ? 'bg-gold text-background shadow-[0_0_8px_#C5A55A]'
+                      : isPast
+                      ? 'bg-green-500/20 border border-green-500/40 text-green-500'
+                      : 'bg-background border border-gold-border/20 text-foreground/40'
+                  }`}>
+                    {idx + 1}
+                  </div>
+                  <span className={`text-xs ${isCurrent ? 'text-gold font-bold' : isPast ? 'text-foreground/75' : 'text-foreground/40'}`}>
+                    {getStatusLabel(step)}
+                  </span>
+                </div>
+                {idx < lifecycle.length - 1 && (
+                  <span className="hidden sm:inline-block text-foreground/20 font-mono">→</span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Main Split Layout */}
       <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left 2 Columns: Edit Form or Read-only details */}
+        {/* Left 2 Columns: Details & Notes */}
         <div className="lg:col-span-2 space-y-6">
           {editing ? (
             <form onSubmit={handleSaveInfo} className="glass-panel rounded-xl p-6 border border-gold-border space-y-6">
@@ -355,7 +454,7 @@ export default function ReservationDetailPage() {
           ) : (
             <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-6">
               <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-                📋 Thông tin chi tiết lịch trình
+                📋 Thông tin chi tiết đặt bàn
               </h3>
               
               <div className="grid gap-6 sm:grid-cols-2 text-xs">
@@ -394,13 +493,12 @@ export default function ReservationDetailPage() {
             </div>
           )}
 
-          {/* Internal Notes log and form */}
+          {/* Internal Notes log */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
               📝 Ghi chú dịch vụ nội bộ
             </h3>
             
-            {/* Note logs */}
             <div className="space-y-3">
               {res.internalNotesList && res.internalNotesList.length > 0 ? (
                 res.internalNotesList.map((n, idx) => (
@@ -417,7 +515,6 @@ export default function ReservationDetailPage() {
               )}
             </div>
 
-            {/* Note Add Form */}
             <form onSubmit={handleAddNote} className="flex gap-2 pt-2 border-t border-gold-border/10">
               <input
                 type="text"
@@ -437,51 +534,90 @@ export default function ReservationDetailPage() {
           </div>
         </div>
 
-        {/* Right Column: Status controllers & status history log */}
+        {/* Right Column: Workflow Control & Status History */}
         <div className="space-y-6">
-          {/* Status Changer Controller */}
+          {/* Workflow Control */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🕹️ Cập nhật trạng thái đón tiếp
+              🕹️ Chuyển trạng thái đặt bàn
             </h3>
-            <div className="grid gap-2 grid-cols-2">
-              {availableStatuses.map((st) => {
-                const isActive = res.status === st
-                return (
-                  <button
-                    key={st}
-                    onClick={() => handleStatusChange(st)}
-                    className={`rounded border py-2 text-center text-[11px] font-medium tracking-wide transition-all ${
-                      isActive
-                        ? 'border-gold bg-gold/15 text-gold font-bold shadow-[0_0_8px_#C5A55A/20]'
-                        : 'border-gold-border/30 hover:border-gold hover:text-gold text-foreground/75'
-                    }`}
-                  >
-                    {getStatusLabel(st)}
-                  </button>
-                )
-              })}
+            
+            <div className="text-xs space-y-1">
+              <div className="flex justify-between border-b border-gold-border/10 pb-2">
+                <span className="text-foreground/50">Trạng thái hiện tại:</span>
+                <span className="font-bold text-gold">{getStatusLabel(res.status)}</span>
+              </div>
             </div>
+
+            {allowedNext.length > 0 ? (
+              <form onSubmit={handleStatusChangeSubmit} className="space-y-4 pt-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] text-foreground/60 font-mono uppercase">Trạng thái tiếp theo được phép</label>
+                  <select
+                    value={selectedNextStatus}
+                    onChange={(e) => setSelectedNextStatus(e.target.value)}
+                    className="rounded border border-gold-border/30 bg-background/50 px-3 py-1.5 text-xs text-foreground focus:border-gold focus:outline-none"
+                  >
+                    {allowedNext.map((st) => (
+                      <option key={st} value={st}>
+                        {getStatusLabel(st)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] text-foreground/60 font-mono uppercase">Ghi chú đổi trạng thái</label>
+                  <input
+                    type="text"
+                    placeholder="Lý do đổi trạng thái (Ví dụ: Đã gọi điện nhắc khách)"
+                    value={statusChangeNote}
+                    onChange={(e) => setStatusChangeNote(e.target.value)}
+                    className="rounded border border-gold-border/30 bg-background/50 px-3 py-1.5 text-xs text-foreground focus:border-gold focus:outline-none"
+                  />
+                </div>
+
+                {transitionError && (
+                  <p className="text-[10px] text-red-500 font-sans italic">{transitionError}</p>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full rounded bg-gold py-2 text-xs font-semibold text-background hover:bg-gold-hover transition-colors"
+                >
+                  Xác nhận chuyển trạng thái
+                </button>
+              </form>
+            ) : (
+              <div className="rounded border border-red-500/20 bg-red-500/5 p-3 text-xs text-red-400 font-sans italic text-center">
+                Không được phép chuyển trạng thái này (Chu trình đặt bàn đã hoàn thành hoặc kết thúc).
+              </div>
+            )}
           </div>
 
-          {/* Status Change History logs */}
+          {/* Lịch sử trạng thái */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              📜 Lịch sử thay đổi trạng thái
+              📜 Lịch sử đặt bàn
             </h3>
             <div className="space-y-4 relative pl-2">
               <div className="absolute left-[7px] top-2 bottom-2 w-[1px] bg-gold-border/25" />
               {res.history && res.history.length > 0 ? (
                 res.history.map((h, index) => (
-                  <div key={index} className="relative pl-5 space-y-0.5 text-xs">
+                  <div key={index} className="relative pl-5 space-y-1 text-xs">
                     <span className="absolute left-0 top-1.5 h-1.5 w-1.5 rounded-full bg-gold border border-gold shadow-[0_0_4px_#C5A55A]" />
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="font-mono text-[9px] text-foreground/50 truncate max-w-[80px]">{getStatusLabel(h.previousStatus)}</span>
+                      <span className="text-[10px] text-foreground/30 font-mono">→</span>
                       <span className="font-mono text-[9px] rounded bg-gold-muted border border-gold-border/20 px-1 py-0.2 text-gold font-bold">
-                        {getStatusLabel(h.status)}
+                        {getStatusLabel(h.newStatus)}
                       </span>
-                      <span className="text-[10px] text-foreground/40 font-mono">{h.time}</span>
                     </div>
-                    <p className="text-[10px] text-foreground/60 italic font-mono">Tác nhân: {h.actor}</p>
+                    <div className="text-[10px] text-foreground/80 leading-normal font-sans">Ghi chú: {h.note}</div>
+                    <div className="text-[9px] text-foreground/40 font-mono flex justify-between items-center pt-0.5">
+                      <span>Người thay đổi: {h.actor}</span>
+                      <span>{h.time}</span>
+                    </div>
                   </div>
                 ))
               ) : (
