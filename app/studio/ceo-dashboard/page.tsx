@@ -56,11 +56,19 @@ interface SopDocument {
   status: string
 }
 
+interface SopTrainingAssignment {
+  id: string
+  sopDocumentId: string
+  status: string
+  dueDate?: string | null
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
   const [improvements, setImprovements] = useState<ImprovementAction[]>([])
   const [sops, setSops] = useState<SopDocument[]>([])
+  const [trainingAssignments, setTrainingAssignments] = useState<SopTrainingAssignment[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -101,6 +109,13 @@ export default function CEODashboardPage() {
           setSops(JSON.parse(storedSops))
         } else {
           setSops([])
+        }
+
+        const storedTraining = localStorage.getItem('mvos_sop_training')
+        if (storedTraining) {
+          setTrainingAssignments(JSON.parse(storedTraining))
+        } else {
+          setTrainingAssignments([])
         }
 
         setLoading(false)
@@ -248,6 +263,13 @@ export default function CEODashboardPage() {
   const activeSopsCount = sops.filter(s => s.status === 'active').length
   const draftSopsCount = sops.filter(s => s.status === 'draft').length
 
+  // SOP Training counts
+  const unconfirmedTrainingCount = trainingAssignments.filter(a => a.status === 'assigned' || a.status === 'in_progress').length
+  const overdueTrainingCount = trainingAssignments.filter(a => {
+    if (a.status === 'acknowledged' || a.status === 'cancelled' || !a.dueDate) return false
+    return new Date(a.dueDate) < new Date(referenceDateStr)
+  }).length
+
   // Operational Risks list
   const getOperationalRisks = () => {
     const risks = []
@@ -277,6 +299,15 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${overdueImprovementsCount} hành động cải tiến quá hạn xử lý!`,
         detail: `Cần đôn đốc bộ phận phụ trách giải quyết các bài học kinh nghiệm vận hành.`
+      })
+    }
+
+    // Risk: Overdue SOP training assignments
+    if (overdueTrainingCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${overdueTrainingCount} phân công đào tạo SOP quá hạn xác nhận!`,
+        detail: `Nhân viên cần hoàn thành xác nhận đã đọc hướng dẫn SOP để bảo đảm kỷ luật dịch vụ.`
       })
     }
 
@@ -573,19 +604,15 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
-          {/* Continuous Learning & SOP Integration Panel */}
+          {/* Continuous Learning, SOP & Training Integration Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
-              🎓 Học tập, Cải tiến & SOP
+              🎓 Học tập, SOP & Đào tạo
             </h3>
             <div className="text-xs space-y-2">
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
                 <span className="text-foreground/60">Hành động cải tiến đang mở:</span>
                 <span className="font-bold text-gold">{openImprovementsCount}</span>
-              </div>
-              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
-                <span className="text-foreground/60">Hành động quá hạn:</span>
-                <span className={`font-bold ${overdueImprovementsCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueImprovementsCount}</span>
               </div>
               <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
                 <span className="text-foreground/60">SOP đang áp dụng:</span>
@@ -595,8 +622,16 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">SOP bản nháp:</span>
                 <span className="font-bold text-yellow-500">{draftSopsCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Đào tạo chưa xác nhận:</span>
+                <span className="font-bold text-yellow-500">{unconfirmedTrainingCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Đào tạo quá hạn:</span>
+                <span className={`font-bold ${overdueTrainingCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{overdueTrainingCount}</span>
+              </div>
             </div>
-            <div className="grid gap-2 grid-cols-3 pt-1 text-[9px] font-semibold text-center">
+            <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
                 href="/studio/learning"
                 className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
@@ -611,9 +646,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/sops"
-                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Thư viện SOP
+              </Link>
+              <Link
+                href="/studio/sop-training"
+                className="rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem đào tạo SOP
               </Link>
             </div>
           </div>

@@ -48,6 +48,7 @@ export const vi = {
   learningMenu: 'Học tập vận hành',
   improvementMenu: 'Hành động cải tiến',
   sopMenu: 'SOP vận hành',
+  trainingMenu: 'Đào tạo SOP',
 } as const
 
 export type Translations = typeof vi

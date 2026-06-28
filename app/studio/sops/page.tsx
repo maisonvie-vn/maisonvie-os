@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 export type SopCategory =
   | "reservation"
@@ -617,6 +618,12 @@ function SopsPageContent() {
                     >
                       Lưu trữ SOP
                     </button>
+                    <Link
+                      href={`/studio/sop-training?sop_id=${selectedSop.id}`}
+                      className="col-span-2 rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block"
+                    >
+                      🎓 Giao đào tạo SOP
+                    </Link>
                   </div>
                 </div>
               </div>

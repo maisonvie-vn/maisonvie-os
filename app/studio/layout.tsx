@@ -19,6 +19,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     { name: vi.learningMenu, href: '/studio/learning' },
     { name: vi.improvementMenu, href: '/studio/improvements' },
     { name: vi.sopMenu, href: '/studio/sops' },
+    { name: vi.trainingMenu, href: '/studio/sop-training' },
     { name: 'Từ điển doanh nghiệp', href: '/studio/dictionary' },
     { name: 'Yêu cầu thay đổi', href: '/studio/change-requests' },
   ]
