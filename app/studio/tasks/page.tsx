@@ -3,37 +3,48 @@ import { vi } from '@/lib/i18n/vi'
 export default function TasksPage() {
   const tasks = [
     {
-      code: 'TASK-001',
-      feature: 'FEAT-010',
-      spec: 'SPEC_001',
-      title: 'Tích hợp Supabase Client và Server SDK',
-      desc: 'Cấu hình file client.ts và server.ts phục vụ kết nối cơ sở dữ liệu Supabase cục bộ.',
+      code: 'TASK-0001',
+      feature: 'FEATURE-0004',
+      spec: 'SPEC-0005',
+      title: 'Build MVOS Studio Foundation',
+      desc: 'Xây dựng giao diện danh sách và thanh điều hướng phụ cho Studio.',
       status: vi.completed,
       priority: 'Cao',
       owner: 'Kỹ sư Antigravity',
-      acceptanceCriteria: '• Biên dịch thành công\n• Không lộ secrets\n• Kết nối an toàn qua SDK'
+      acceptanceCriteria: '• Tất cả các trang trong Studio mở được bình thường và hiển thị đúng tiếng Việt.'
     },
     {
-      code: 'TASK-002',
-      feature: 'FEAT-020',
-      spec: 'SPEC_002',
-      title: 'Xây dựng Báo cáo Năng lực Doanh nghiệp Việt hóa',
-      desc: 'Thiết kế giao diện /architecture/business-capability hiển thị 12 domains cốt lõi.',
-      status: vi.completed,
-      priority: 'Cao',
-      owner: 'Kỹ sư Antigravity',
-      acceptanceCriteria: '• Sử dụng tiếng Việt hoàn toàn\n• Chạy đúng đường dẫn định tuyến\n• CSS đồng bộ'
-    },
-    {
-      code: 'TASK-003',
-      feature: 'FEAT-030',
-      spec: 'SPEC_003',
-      title: 'Thiết lập bảng cơ sở dữ liệu quản trị dự án Studio',
-      desc: 'Tạo tệp di chuyển SQL 002_mvos_studio_foundation.sql với các bảng epics, features, tasks...',
+      code: 'TASK-0002',
+      feature: 'FEATURE-0004',
+      spec: 'SPEC-0005',
+      title: 'Seed MVOS Studio Initial Data',
+      desc: 'Lập file dữ liệu mẫu 003_mvos_studio_seed_data.sql chứa epics, features, tasks mẫu.',
       status: vi.inProgress,
       priority: 'Cao',
       owner: 'Kỹ sư Antigravity',
-      acceptanceCriteria: '• Di chuyển SQL sạch\n• Bật chế độ RLS\n• Có chính sách phân quyền cho mỗi bảng'
+      acceptanceCriteria: '• Có file seed_data.sql và hiển thị tổng số liệu thống kê ở trang tổng quan Studio.'
+    },
+    {
+      code: 'TASK-0003',
+      feature: 'FEATURE-0008',
+      spec: 'SPEC-0002',
+      title: 'Build Enterprise Dictionary Foundation',
+      desc: 'Xây dựng giao diện tra cứu từ điển thuật ngữ doanh nghiệp nội bộ.',
+      status: 'Lên kế hoạch (Planned)',
+      priority: 'Trung bình',
+      owner: 'Kỹ sư Antigravity',
+      acceptanceCriteria: '• Trang từ điển doanh nghiệp hoạt động hiển thị đầy đủ giải nghĩa từ vựng.'
+    },
+    {
+      code: 'TASK-0004',
+      feature: 'FEATURE-0001',
+      spec: 'SPEC-0003',
+      title: 'Build Reservation & Email OS Foundation',
+      desc: 'Xây dựng phân hệ đặt bàn, kết nối mẫu email thông báo và RLS liên quan.',
+      status: 'Lên kế hoạch (Planned)',
+      priority: 'Cao',
+      owner: 'Kỹ sư Antigravity',
+      acceptanceCriteria: '• Chức năng đặt bàn hoạt động ngoại tuyến và hiển thị danh sách VIP.'
     }
   ]
 
@@ -94,6 +105,8 @@ export default function TasksPage() {
                     <span className={`inline-block rounded px-2.5 py-0.5 text-[9px] font-bold tracking-wider ${
                       task.status === vi.completed
                         ? 'bg-green-500/10 border border-green-500/25 text-green-500'
+                        : task.status === vi.inProgress
+                        ? 'bg-blue-500/10 border border-blue-500/25 text-blue-500'
                         : 'bg-yellow-500/10 border border-yellow-500/25 text-yellow-500'
                     }`}>
                       {task.status}

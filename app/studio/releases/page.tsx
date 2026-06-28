@@ -1,30 +1,23 @@
 import { vi } from '@/lib/i18n/vi'
 
+interface Release {
+  code: string
+  version: string
+  title: string
+  desc: string
+  releaseDate: string
+  status: string
+}
+
 export default function ReleasesPage() {
-  const releases = [
+  const releases: Release[] = [
     {
-      code: 'REL-001',
+      code: 'REL-010',
       version: 'v0.1.0',
-      title: 'Maison Vie OS Foundation Release',
-      desc: 'Phát hành bản dựng nền tảng ban đầu chạy Next.js 15, kết nối Supabase Client, định cấu hình giao diện tân cổ điển.',
+      title: 'MVOS v0.1 - Foundation Release',
+      desc: 'Phát hành bản dựng nền tảng ban đầu bao gồm Next.js 15 App Router, cấu hình i18n tiếng Việt, cài đặt chính sách RLS và xây dựng phân hệ quản trị dự án Studio.',
       releaseDate: '2026-06-28',
-      status: vi.approved
-    },
-    {
-      code: 'REL-002',
-      version: 'v0.2.0',
-      title: 'Enterprise Architecture Blueprint Release',
-      desc: 'Bổ sung bản đặc tả 12 domains cốt lõi và giao diện hiển thị bản đồ năng lực doanh nghiệp.',
-      releaseDate: '2026-06-28',
-      status: vi.approved
-    },
-    {
-      code: 'REL-003',
-      version: 'v0.3.0',
-      title: 'MVOS Studio Management Release',
-      desc: 'Tích hợp các bảng quản trị dự án, bảng theo dõi Epics, Features, Specs, Tasks, ADRs, Releases.',
-      releaseDate: 'Dự kiến: 2026-06-29',
-      status: vi.draft
+      status: vi.inProgress
     }
   ]
 

@@ -2,39 +2,14 @@ import { vi } from '@/lib/i18n/vi'
 
 export default function FeaturesPage() {
   const features = [
-    {
-      code: 'FEAT-010',
-      epic: 'EPIC-001',
-      title: 'Kiến trúc Next.js App Router & Global Styles',
-      desc: 'Thiết kế cấu trúc dự án Next.js, cấu hình theme tân cổ điển thau/vàng đồng trong file globals.css.',
-      status: vi.approved,
-      priority: 'Cao',
-      owner: 'Trưởng nhóm phát triển',
-      progress: 100,
-      version: 'v0.1.0'
-    },
-    {
-      code: 'FEAT-020',
-      epic: 'EPIC-002',
-      title: 'Bản đồ năng lực & Sơ đồ bộ phận vận hành',
-      desc: 'Mô tả cấu trúc 12 Core Domains và phân bổ vai trò nghiệp vụ quản lý cho nhân viên biệt thự.',
-      status: vi.approved,
-      priority: 'Cao',
-      owner: 'Kiến trúc sư trưởng',
-      progress: 100,
-      version: 'v0.2.0'
-    },
-    {
-      code: 'FEAT-030',
-      epic: 'EPIC-003',
-      title: 'MVOS Studio Project Management Views',
-      desc: 'Xây dựng giao diện danh sách Epics, Features, Specs, Tasks, ADRs, Releases và RFCs.',
-      status: vi.inProgress,
-      priority: 'Cao',
-      owner: 'Kỹ sư Antigravity',
-      progress: 50,
-      version: 'v0.3.0'
-    }
+    { code: 'FEATURE-0001', epic: 'EPIC-000', title: 'Epic Management', desc: 'Giao diện quản lý danh sách yêu cầu cấp cao.', status: vi.approved, priority: 'Cao', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0002', epic: 'EPIC-000', title: 'Feature Management', desc: 'Giao diện phân rã các tính năng nghiệp vụ.', status: vi.approved, priority: 'Cao', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0003', epic: 'EPIC-000', title: 'Specification Library', desc: 'Thư viện đặc tả kỹ thuật dự án.', status: vi.approved, priority: 'Trung bình', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0004', epic: 'EPIC-000', title: 'Task Management', desc: 'Giao diện quản lý đầu việc kỹ thuật chi tiết.', status: vi.approved, priority: 'Cao', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0005', epic: 'EPIC-000', title: 'Architecture Decision Records', desc: 'Lưu trữ các quyết định thiết kế kiến trúc (ADR).', status: vi.approved, priority: 'Trung bình', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0006', epic: 'EPIC-000', title: 'Release Notes', desc: 'Lịch sử phát hành các phiên bản phần mềm.', status: vi.approved, priority: 'Trung bình', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0007', epic: 'EPIC-000', title: 'Change Requests', desc: 'Nhật ký yêu cầu thay đổi (RFC).', status: vi.approved, priority: 'Cao', owner: 'Kỹ sư Antigravity', progress: 100, version: 'v0.3.0' },
+    { code: 'FEATURE-0008', epic: 'EPIC-000', title: 'Enterprise Dictionary', desc: 'Từ điển các khái niệm nghiệp vụ lõi.', status: vi.draft, priority: 'Cao', owner: 'Kỹ sư Antigravity', progress: 0, version: 'v0.4.0' }
   ]
 
   return (

@@ -3,8 +3,38 @@ import { vi } from '@/lib/i18n/vi'
 export default function ADRPage() {
   const adrs = [
     {
-      code: 'ADR-001',
-      title: 'Thiết kế Giao diện Phân hệ (Frontend UI) sử dụng Tiếng Việt',
+      code: 'ADR-0001',
+      title: 'Sử dụng GitHub làm Nguồn Sự Thật Duy Nhất (Source of Truth)',
+      context: 'Mã nguồn, sơ đồ di chuyển SQL và tài liệu quy chuẩn kỹ thuật cần được lưu vết tập trung và quản lý phiên bản rõ ràng.',
+      decision: 'Sử dụng GitHub làm kho chứa chính thức cho mã nguồn và tài liệu kiến trúc dự án MVOS.',
+      consequences: 'Lịch sử thay đổi được bảo toàn đầy đủ và có khả năng khôi phục (rollback) nhanh chóng khi cần.',
+      status: vi.approved,
+      owner: 'Kiến trúc sư trưởng',
+      date: '2026-06-28'
+    },
+    {
+      code: 'ADR-0002',
+      title: 'Sử dụng nền tảng Vercel để triển khai Front-end',
+      context: 'Hệ thống cần môi trường phân phối tốc độ cao, hỗ trợ serverless và tối ưu hóa thời gian tải trang.',
+      decision: 'Sử dụng nền tảng Vercel làm nơi triển khai các bản dựng tĩnh và máy chủ biên Next.js.',
+      consequences: 'Tốc độ phản hồi cực nhanh cho nhân viên tiếp đón tại sảnh sảnh biệt thự.',
+      status: vi.approved,
+      owner: 'Kiến trúc sư trưởng',
+      date: '2026-06-28'
+    },
+    {
+      code: 'ADR-0003',
+      title: 'Sử dụng Supabase cho Database và Xác thực',
+      context: 'Hệ thống cần lưu trữ dữ liệu quan hệ an toàn, hỗ trợ cập nhật thời gian thực và quản lý tài khoản.',
+      decision: 'Ủy quyền lưu trữ dữ liệu cho Supabase PostgreSQL và quản lý đăng nhập thông qua Supabase Auth.',
+      consequences: 'Giảm thiểu tài nguyên tự dựng backend máy chủ và tận dụng tối đa bảo mật RLS.',
+      status: vi.approved,
+      owner: 'Hội đồng kỹ thuật',
+      date: '2026-06-28'
+    },
+    {
+      code: 'ADR-0004',
+      title: 'Giao diện Phân hệ (Frontend UI) sử dụng Tiếng Việt',
       context: 'Quy chuẩn vận hành biệt thự yêu cầu giao diện người dùng phải thuận tiện cho nhân sự phục vụ tại Việt Nam.',
       decision: 'Chuyển đổi toàn bộ ngôn ngữ hiển thị trên UI sang tiếng Việt 100%, đồng thời giữ nguyên các định dạng đặt tên kỹ thuật ở database/API bằng tiếng Anh.',
       consequences: 'Cải thiện trải nghiệm nhân sự, đồng nhất quy chuẩn kỹ thuật hệ thống.',
@@ -13,13 +43,13 @@ export default function ADRPage() {
       date: '2026-06-28'
     },
     {
-      code: 'ADR-002',
-      title: 'Cô lập kết nối Database trực tiếp qua Supabase RLS',
-      context: 'Hệ thống cần đảm bảo an toàn tuyệt đối cho thông tin VIP và các log nội bộ.',
-      decision: 'Kích hoạt chính sách Row Level Security (RLS) cho tất cả các bảng dữ liệu của MVOS và MVOS Studio.',
-      consequences: 'Ngăn chặn rò rỉ dữ liệu qua các token rác của client.',
+      code: 'ADR-0005',
+      title: 'Tác nhân AI (AI Agents) phải tuân thủ nghiêm ngặt Đặc tả',
+      context: 'Các tác nhân AI tự động cần hoạt động đúng ranh giới nghiệp vụ mà không tự ý sửa đổi kiến trúc.',
+      decision: 'Tác nhân AI chỉ thực thi nhiệm vụ trong các file đặc tả chính thức, không thiết kế kiến trúc mới.',
+      consequences: 'Tránh các quyết định sai lệch ảnh hưởng đến hoạt động thực tế.',
       status: vi.approved,
-      owner: 'Hội đồng kỹ thuật',
+      owner: 'Hội đồng quản trị',
       date: '2026-06-28'
     }
   ]

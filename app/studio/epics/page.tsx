@@ -2,39 +2,16 @@ import { vi } from '@/lib/i18n/vi'
 
 export default function EpicsPage() {
   const epics = [
-    {
-      code: 'EPIC-001',
-      title: 'Maison Vie OS Foundation',
-      desc: 'Thiết lập khung làm việc cơ bản Next.js, tích hợp Supabase SDK, cấu hình CSS tân cổ điển và bảo mật RLS.',
-      status: vi.approved,
-      priority: 'Cao',
-      owner: 'Trưởng bộ phận kỹ thuật',
-      sprint: 'Sprint 0.1',
-      progress: 100,
-      version: 'v0.1.0'
-    },
-    {
-      code: 'EPIC-002',
-      title: 'Maison Vie Enterprise Architecture',
-      desc: 'Xây dựng bản đồ năng lực doanh nghiệp, phân bổ cơ cấu bộ phận và cấu hình thiết kế cơ sở dữ liệu cốt lõi.',
-      status: vi.approved,
-      priority: 'Cao',
-      owner: 'Kiến trúc sư trưởng',
-      sprint: 'Sprint 1.0',
-      progress: 100,
-      version: 'v0.2.0'
-    },
-    {
-      code: 'EPIC-003',
-      title: 'Maison Vie Studio Project Management',
-      desc: 'Xây dựng phân hệ quản trị dự án nội bộ cho phép lập kế hoạch và theo dõi các tính năng, đặc tả, công việc.',
-      status: vi.inProgress,
-      priority: 'Trung bình',
-      owner: 'Kỹ sư Antigravity',
-      sprint: 'Sprint 1.0',
-      progress: 40,
-      version: 'v0.3.0'
-    }
+    { code: 'EPIC-000', title: 'MVOS Studio', desc: 'Hệ thống quản trị dự án nội bộ và tiến độ phát triển MVOS.', status: vi.approved, priority: 'Cao', owner: 'Kiến trúc sư trưởng', sprint: 'Sprint 1', progress: 10, version: 'v0.3.0' },
+    { code: 'EPIC-001', title: 'Enterprise Architecture', desc: 'Đặc tả và cấu trúc kiến trúc doanh nghiệp Maison Vie.', status: vi.approved, priority: 'Cao', owner: 'Kiến trúc sư trưởng', sprint: 'Sprint 1', progress: 100, version: 'v0.2.0' },
+    { code: 'EPIC-002', title: 'Reservation & Email OS', desc: 'Quy trình định tuyến đặt bàn và thông báo tự động cho khách hàng.', status: vi.draft, priority: 'Cao', owner: 'Bộ phận vận hành', sprint: 'Sprint 2', progress: 0, version: 'v0.4.0' },
+    { code: 'EPIC-003', title: 'Document Engine', desc: 'Hệ thống quản lý tài liệu quy trình SOP và chính sách nội bộ.', status: vi.draft, priority: 'Trung bình', owner: 'Bộ phận vận hành', sprint: 'Sprint 3', progress: 0, version: 'v0.5.0' },
+    { code: 'EPIC-004', title: 'Knowledge Engine', desc: 'Công cụ quản lý tri thức và hướng dẫn nhân viên phục vụ.', status: vi.draft, priority: 'Trung bình', owner: 'Bộ phận vận hành', sprint: 'Sprint 3', progress: 0, version: 'v0.6.0' },
+    { code: 'EPIC-005', title: 'FOH OS', desc: 'Giao diện quản lý đặt bàn và quy trình tiếp đón sảnh.', status: vi.draft, priority: 'Cao', owner: 'Bộ phận lễ tân', sprint: 'Sprint 4', progress: 0, version: 'v0.7.0' },
+    { code: 'EPIC-006', title: 'Kitchen OS', desc: 'Hệ điều hành phối hợp bếp ăn và thực đơn nếm thử.', status: vi.draft, priority: 'Cao', owner: 'Bếp trưởng', sprint: 'Sprint 4', progress: 0, version: 'v0.8.0' },
+    { code: 'EPIC-007', title: 'Inventory OS', desc: 'Hệ thống kiểm soát nguyên vật liệu và quản lý nhà cung cấp.', status: vi.draft, priority: 'Trung bình', owner: 'Bộ phận kho', sprint: 'Sprint 5', progress: 0, version: 'v0.9.0' },
+    { code: 'EPIC-008', title: 'Accounting OS', desc: 'Đối soát tài chính két, lập hóa đơn VAT và báo cáo doanh thu.', status: vi.draft, priority: 'Cao', owner: 'Kế toán trưởng', sprint: 'Sprint 5', progress: 0, version: 'v1.0.0' },
+    { code: 'EPIC-009', title: 'CEO Dashboard', desc: 'Trung tâm tổng hợp số liệu và ra quyết định chiến lược cho ban giám đốc.', status: vi.draft, priority: 'Cao', owner: 'CEO', sprint: 'Sprint 6', progress: 0, version: 'v1.1.0' }
   ]
 
   return (

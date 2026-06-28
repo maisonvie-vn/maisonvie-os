@@ -3,37 +3,59 @@ import { vi } from '@/lib/i18n/vi'
 export default function SpecificationsPage() {
   const specs = [
     {
-      code: 'SPEC_001',
-      feature: 'FEAT-010',
-      title: 'Mô hình Kiến trúc Doanh nghiệp MVOS',
+      code: 'SPEC-0001',
+      feature: 'FEATURE-0001',
+      title: 'MVOS Project Governance',
       status: vi.approved,
       version: 'v1.0',
       owner: 'Kiến trúc sư trưởng',
-      reviewer: 'Hội đồng kỹ thuật',
+      reviewer: 'Hội đồng quản trị',
+      approvedAt: '2026-06-28',
+      filePath: '/docs/00_project/AI_DEVELOPMENT_RULES.md'
+    },
+    {
+      code: 'SPEC-0002',
+      feature: 'FEATURE-0008',
+      title: 'MVOS Language Policy',
+      status: vi.approved,
+      version: 'v1.0',
+      owner: 'Kiến trúc sư trưởng',
+      reviewer: 'Hội đồng quản trị',
+      approvedAt: '2026-06-28',
+      filePath: '/docs/00_project/LANGUAGE_POLICY.md'
+    },
+    {
+      code: 'SPEC-0003',
+      feature: 'FEATURE-0005',
+      title: 'MVOS Enterprise Architecture',
+      status: vi.approved,
+      version: 'v1.0',
+      owner: 'Kiến trúc sư trưởng',
+      reviewer: 'Kiến trúc sư trưởng',
       approvedAt: '2026-06-28',
       filePath: '/specifications/SPEC_001_ENTERPRISE_ARCHITECTURE.md'
     },
     {
-      code: 'SPEC_002',
-      feature: 'FEAT-020',
-      title: 'Bản đồ Năng lực Doanh nghiệp Maison Vie',
+      code: 'SPEC-0004',
+      feature: 'FEATURE-0005',
+      title: 'Business Capability Map',
       status: vi.approved,
-      version: 'v1.1',
+      version: 'v1.0',
       owner: 'Kiến trúc sư trưởng',
-      reviewer: 'Hội đồng kỹ thuật',
+      reviewer: 'Kiến trúc sư trưởng',
       approvedAt: '2026-06-28',
       filePath: '/specifications/SPEC_002_BUSINESS_CAPABILITY_MAP.md'
     },
     {
-      code: 'SPEC_003',
-      feature: 'FEAT-030',
-      title: 'Kiến trúc quản lý dự án nội bộ MVOS Studio',
-      status: vi.pendingReview,
-      version: 'v0.9-RC1',
+      code: 'SPEC-0005',
+      feature: 'FEATURE-0004',
+      title: 'MVOS Studio Specification',
+      status: vi.approved,
+      version: 'v1.0',
       owner: 'Kỹ sư Antigravity',
       reviewer: 'Kiến trúc sư trưởng',
-      approvedAt: 'Chưa duyệt',
-      filePath: '/specifications/SPEC_003_DEPARTMENT_ARCHITECTURE.md'
+      approvedAt: '2026-06-28',
+      filePath: '/specifications/SPEC_005_PERMISSION_ARCHITECTURE.md'
     }
   ]
 
