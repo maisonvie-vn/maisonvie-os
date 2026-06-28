@@ -58,6 +58,7 @@ export const vi = {
   eventMenu: 'Sự kiện',
   menuMenu: 'Thực đơn',
   recipeMenu: 'Công thức',
+  normalizationMenu: 'Chuẩn hóa công thức',
 } as const
 
 export type Translations = typeof vi

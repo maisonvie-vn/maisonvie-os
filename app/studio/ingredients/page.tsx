@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
+import Link from 'next/link'
 
 export type IngredientCategory =
   | "protein"
@@ -916,6 +917,16 @@ function IngredientsPageContent() {
                 <div className="bg-background/40 p-2.5 rounded border border-gold-border/10 leading-relaxed space-y-1">
                   {selectedIngredient.allergyNote && <div><span className="font-semibold text-red-400 font-bold">Dị ứng cần lưu ý:</span> {selectedIngredient.allergyNote}</div>}
                   {selectedIngredient.dietaryNote && <div><span className="font-semibold text-foreground/80">Chế độ ăn kiêng:</span> {selectedIngredient.dietaryNote}</div>}
+                </div>
+
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Dòng công thức liên quan</span>
+                  <Link
+                    href={`/studio/normalization?ingredient_master_id=${selectedIngredient.id}`}
+                    className="w-full rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
+                  >
+                    ⚖️ Xem dòng công thức liên kết
+                  </Link>
                 </div>
 
                 <div className="text-[9px] text-foreground/40 font-mono border-t border-gold-border/10 pt-3 flex justify-between">

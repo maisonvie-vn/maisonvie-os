@@ -118,6 +118,11 @@ interface IngredientMasterItem {
   allergyNote?: string | null
 }
 
+interface RecipeIngredientLine {
+  id: string
+  normalizationStatus?: string | null
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -133,6 +138,7 @@ export default function CEODashboardPage() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([])
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [ingredients, setIngredients] = useState<IngredientMasterItem[]>([])
+  const [recipeLines, setRecipeLines] = useState<RecipeIngredientLine[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -243,6 +249,13 @@ export default function CEODashboardPage() {
           setIngredients(JSON.parse(storedIngs))
         } else {
           setIngredients([])
+        }
+
+        const storedLines = localStorage.getItem('mvos_recipe_ingredient_lines')
+        if (storedLines) {
+          setRecipeLines(JSON.parse(storedLines))
+        } else {
+          setRecipeLines([])
         }
 
         setLoading(false)
@@ -430,6 +443,10 @@ export default function CEODashboardPage() {
   // Ingredient Master counts
   const activeIngredientsCount = ingredients.filter(i => i.status === 'active').length
   const allergyIngredientsCount = ingredients.filter(i => i.allergyNote && i.allergyNote.trim() !== '').length
+
+  // Recipe Ingredient Normalization counts
+  const unmappedLinesCount = recipeLines.filter(l => !l.normalizationStatus || l.normalizationStatus === 'unmapped').length
+  const needsReviewLinesCount = recipeLines.filter(l => l.normalizationStatus === 'needs_review').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -890,6 +907,14 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Nguyên liệu có dị ứng:</span>
                 <span className="font-bold text-red-400">{allergyIngredientsCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Nguyên liệu chưa map:</span>
+                <span className="font-bold text-yellow-500">{unmappedLinesCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Định lượng cần kiểm tra:</span>
+                <span className="font-bold text-orange-400">{needsReviewLinesCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -960,9 +985,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/ingredients"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem nguyên liệu
+              </Link>
+              <Link
+                href="/studio/normalization"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem danh mục nguyên liệu
+                Xem chuẩn hóa công thức
               </Link>
             </div>
           </div>

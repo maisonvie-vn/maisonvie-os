@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 
 export type RecipeType =
   | "standard"
@@ -1022,6 +1023,13 @@ function RecipesPageContent() {
                   ) : (
                     <p className="text-[10px] text-foreground/40 italic">Chưa có dòng nguyên liệu nào cho công thức này.</p>
                   )}
+
+                  <Link
+                    href={`/studio/normalization?recipe_id=${selectedRecipe.id}`}
+                    className="w-full rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
+                  >
+                    ⚖️ Chuẩn hóa nguyên liệu
+                  </Link>
 
                   {/* Add Ingredient Line Form */}
                   <form onSubmit={handleCreateIngredientLine} className="bg-gold-muted/5 border border-gold-border/10 p-3 rounded space-y-2 mt-2">

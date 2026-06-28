@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0024 added Ingredient Master Foundation to manage structured ingredient master data for Maison Vie, including multilingual ingredient names, category, default unit, storage type, shelf-life notes, allergy/dietary notes, quality specifications, preparation notes, kitchen notes, and status. The implementation remains single-branch, non-AI, and does not introduce food cost, WAC, inventory integration, stock movement, supplier pricing, purchase orders, recipe cost rollup, margin calculation, or POS integration. Active ingredient master items can be linked directly to recipe ingredient lines in Recipe Foundation. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0025 added Recipe Ingredient Normalization Foundation to manually link recipe ingredient lines with Ingredient Master records, track normalization status, and store normalized quantity/unit where available. Unit conversion rules can be documented globally or per-ingredient. The implementation remains single-branch, non-AI, and does not introduce food cost, WAC, inventory integration, stock movement, supplier pricing, purchase orders, recipe cost rollup, margin calculation, or POS integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -28,3 +28,4 @@ TASK-0024 added Ingredient Master Foundation to manage structured ingredient mas
 * **TASK-0022**: Menu Catalog Foundation
 * **TASK-0023**: Recipe Foundation
 * **TASK-0024**: Ingredient Master Foundation
+* **TASK-0025**: Recipe Ingredient Normalization Foundation
