@@ -91,6 +91,14 @@ export interface PurchaseRequestLine {
   updatedAt: string
 }
 
+export interface PurchaseOrder {
+  id: string
+  purchaseOrderCode?: string | null
+  orderDate: string
+  status: string
+  purchaseRequestId?: string | null
+}
+
 interface IngredientMaster {
   id: string
   ingredientNameVi: string
@@ -197,6 +205,7 @@ const INITIAL_REQUEST_LINES: PurchaseRequestLine[] = [
 function PurchaseRequestsPageContent() {
   const [requests, setRequests] = useState<PurchaseRequest[]>([])
   const [requestLines, setRequestLines] = useState<PurchaseRequestLine[]>([])
+  const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrder[]>([])
   const [masterIngredients, setMasterIngredients] = useState<IngredientMaster[]>([])
   const [suppliers, setSuppliers] = useState<Supplier[]>([])
   const [selectedRequest, setSelectedRequest] = useState<PurchaseRequest | null>(null)
@@ -267,6 +276,11 @@ function PurchaseRequestsPageContent() {
 
         if (storedSuppliers) loadedSuppliers = JSON.parse(storedSuppliers)
         setSuppliers(loadedSuppliers)
+
+        const storedOrders = localStorage.getItem('mvos_purchase_orders')
+        if (storedOrders) {
+          setPurchaseOrders(JSON.parse(storedOrders))
+        }
 
         if (loadedRequests.length > 0) {
           setSelectedRequest(loadedRequests[0])
@@ -1015,6 +1029,26 @@ function PurchaseRequestsPageContent() {
                       Thêm dòng mặt hàng
                     </button>
                   </form>
+                </div>
+
+                {/* Related Purchase Orders */}
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-gold font-serif-cormorant font-bold uppercase tracking-wider block">📦 Đơn đặt hàng liên quan</span>
+                  {purchaseOrders.filter(po => po.purchaseRequestId === selectedRequest.id).length > 0 ? (
+                    <div className="space-y-1 max-h-[150px] overflow-y-auto pr-1">
+                      {purchaseOrders.filter(po => po.purchaseRequestId === selectedRequest.id).map((po) => (
+                        <div key={po.id} className="flex justify-between items-center text-[10px] bg-background/30 p-2 rounded border border-gold-border/10">
+                          <div>
+                            <span className="font-bold text-foreground">{po.purchaseOrderCode || po.id}</span>
+                            <span className="text-[8px] text-foreground/50 block font-mono">{po.orderDate}</span>
+                          </div>
+                          <span className="text-[8px] font-semibold text-gold-hover">{po.status}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-foreground/45 italic">Chưa có đơn đặt hàng nào liên kết với yêu cầu này.</p>
+                  )}
                 </div>
 
                 {/* State Actions for Purchase Request Header */}

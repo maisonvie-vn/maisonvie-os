@@ -135,6 +135,12 @@ interface PurchaseRequestHeader {
   status: string
 }
 
+interface PurchaseOrderHeader {
+  id: string
+  priority: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -153,6 +159,7 @@ export default function CEODashboardPage() {
   const [recipeLines, setRecipeLines] = useState<RecipeIngredientLine[]>([])
   const [suppliers, setSuppliers] = useState<Supplier[]>([])
   const [purchaseRequests, setPurchaseRequests] = useState<PurchaseRequestHeader[]>([])
+  const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrderHeader[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -284,6 +291,13 @@ export default function CEODashboardPage() {
           setPurchaseRequests(JSON.parse(storedReqs))
         } else {
           setPurchaseRequests([])
+        }
+
+        const storedOrders = localStorage.getItem('mvos_purchase_orders')
+        if (storedOrders) {
+          setPurchaseOrders(JSON.parse(storedOrders))
+        } else {
+          setPurchaseOrders([])
         }
 
         setLoading(false)
@@ -483,6 +497,11 @@ export default function CEODashboardPage() {
   // Purchase Request counts
   const reviewingRequestsCount = purchaseRequests.filter(r => r.status === 'reviewing').length
   const urgentRequestsCount = purchaseRequests.filter(r => r.priority === 'urgent').length
+
+  // Purchase Order counts
+  const draftOrdersCount = purchaseOrders.filter(o => o.status === 'draft').length
+  const sentOrdersCount = purchaseOrders.filter(o => o.status === 'sent').length
+  const urgentOrdersCount = purchaseOrders.filter(o => o.priority === 'urgent').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -967,6 +986,18 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Yêu cầu mua khẩn cấp:</span>
                 <span className="font-bold text-red-400">{urgentRequestsCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Đơn đặt hàng bản nháp:</span>
+                <span className="font-bold text-foreground/50">{draftOrdersCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Đơn đã gửi nhà cung cấp:</span>
+                <span className="font-bold text-blue-400">{sentOrdersCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Đơn đặt hàng khẩn cấp:</span>
+                <span className="font-bold text-red-400">{urgentOrdersCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -1055,9 +1086,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/purchase-requests"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem yêu cầu mua
+              </Link>
+              <Link
+                href="/studio/purchase-orders"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem yêu cầu mua hàng
+                Xem đơn đặt hàng
               </Link>
             </div>
           </div>
