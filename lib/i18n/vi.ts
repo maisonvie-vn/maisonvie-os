@@ -45,6 +45,7 @@ export const vi = {
   release: 'Phiên bản phát hành',
   changeRequest: 'Yêu cầu thay đổi',
   ceoDashboard: 'Dashboard CEO',
+  learningMenu: 'Học tập vận hành',
 } as const
 
 export type Translations = typeof vi

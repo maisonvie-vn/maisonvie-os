@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 interface Reservation {
   id: string
@@ -522,6 +523,22 @@ export default function CEODashboardPage() {
 
         {/* Right Column: Operational Risks & Data Gaps */}
         <div className="space-y-8">
+          {/* Continuous Learning Integration Panel */}
+          <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
+            <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
+              🎓 Học tập vận hành
+            </h3>
+            <p className="text-xs text-foreground/80 leading-relaxed font-sans">
+              Xem các bài học và hành động cải tiến đang mở từ sự cố thực tế.
+            </p>
+            <Link
+              href="/studio/learning"
+              className="inline-block rounded border border-gold/40 hover:border-gold px-4 py-2 text-center text-xs font-semibold text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all w-full"
+            >
+              Truy cập Nhật ký Học tập →
+            </Link>
+          </div>
+
           {/* Operational Risks Panel */}
           <div className="glass-panel rounded-xl p-6 border border-gold-border space-y-4">
             <h3 className="text-lg font-serif-cormorant font-bold text-gold tracking-wide border-b border-gold-border/20 pb-2">
