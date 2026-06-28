@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0028 added Purchase Order Foundation to manage structured supplier orders and order lines for Maison Vie. Purchase orders may link to purchase requests and suppliers, and order lines may link to purchase request lines and Ingredient Master records. The implementation remains single-branch, non-AI, and does not introduce supplier pricing, unit price, order totals, VAT calculation, invoice management, debt/payment tracking, inventory receiving, stock movement, WAC, food cost, recipe cost rollup, or accounting integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0029 added Goods Receipt Foundation to manage actual received goods against purchase orders. Goods receipts support received, accepted, rejected, and damaged quantities, issue notes, and status workflows. The implementation remains single-branch, non-AI, and does not introduce stock movements, stock on hand, inventory valuation, WAC, food cost, invoice management, payment tracking, accounting integration, or VAT calculations. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -32,3 +32,4 @@ TASK-0028 added Purchase Order Foundation to manage structured supplier orders a
 * **TASK-0026**: Supplier Master Foundation
 * **TASK-0027**: Purchase Request Foundation
 * **TASK-0028**: Purchase Order Foundation
+* **TASK-0029**: Goods Receipt Foundation

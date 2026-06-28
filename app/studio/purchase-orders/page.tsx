@@ -112,6 +112,14 @@ interface Supplier {
   supplierName: string
 }
 
+interface GoodsReceipt {
+  id: string
+  receiptNumber: string
+  receivedDate: string
+  status: string
+  purchaseOrderId: string
+}
+
 const INITIAL_ORDERS: PurchaseOrder[] = [
   {
     id: 'po-701',
@@ -173,6 +181,7 @@ const INITIAL_ORDER_LINES: PurchaseOrderLine[] = [
 function PurchaseOrdersPageContent() {
   const [orders, setOrders] = useState<PurchaseOrder[]>([])
   const [orderLines, setOrderLines] = useState<PurchaseOrderLine[]>([])
+  const [goodsReceipts, setGoodsReceipts] = useState<GoodsReceipt[]>([])
   const [purchaseRequests, setPurchaseRequests] = useState<PurchaseRequest[]>([])
   const [masterIngredients, setMasterIngredients] = useState<IngredientMaster[]>([])
   const [suppliers, setSuppliers] = useState<Supplier[]>([])
@@ -253,6 +262,11 @@ function PurchaseOrdersPageContent() {
 
         if (storedSuppliers) loadedSuppliers = JSON.parse(storedSuppliers)
         setSuppliers(loadedSuppliers)
+
+        const storedReceipts = localStorage.getItem('mvos_goods_receipts')
+        if (storedReceipts) {
+          setGoodsReceipts(JSON.parse(storedReceipts))
+        }
 
         if (loadedOrders.length > 0) {
           setSelectedOrder(loadedOrders[0])
@@ -1085,6 +1099,26 @@ function PurchaseOrdersPageContent() {
                       Đóng đơn hàng (Close)
                     </button>
                   </div>
+                </div>
+
+                {/* Related Goods Receipts */}
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-gold font-serif-cormorant font-bold uppercase tracking-wider block">🧾 Phiếu nhận hàng liên quan</span>
+                  {goodsReceipts.filter(gr => gr.purchaseOrderId === selectedOrder.id).length > 0 ? (
+                    <div className="space-y-1 max-h-[150px] overflow-y-auto pr-1">
+                      {goodsReceipts.filter(gr => gr.purchaseOrderId === selectedOrder.id).map((gr) => (
+                        <div key={gr.id} className="flex justify-between items-center text-[10px] bg-background/30 p-2 rounded border border-gold-border/10">
+                          <div>
+                            <span className="font-bold text-foreground">{gr.receiptNumber}</span>
+                            <span className="text-[8px] text-foreground/50 block font-mono">{gr.receivedDate}</span>
+                          </div>
+                          <span className="text-[8px] font-semibold text-gold-hover">{gr.status === 'received' ? 'Đã nhận đủ' : gr.status === 'partially_received' ? 'Nhận một phần' : gr.status === 'issue_reported' ? 'Có vấn đề' : gr.status}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-foreground/45 italic">Chưa có phiếu nhận hàng nào liên kết với đơn này.</p>
+                  )}
                 </div>
 
                 <div className="border-t border-gold-border/20 pt-4 flex flex-col gap-1.5">
