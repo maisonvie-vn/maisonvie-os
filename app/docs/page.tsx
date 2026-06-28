@@ -20,6 +20,11 @@ export default function DocsPage() {
       title: '4. Agents & Workflows',
       content: 'Autonomous agents reside in `/agents`. They process tasks such as checking incoming CRM mail, verifying layout rules, and matching guest VIP preferences. Workflows in `/workflows` orchestrate actions (e.g. sending a Slack/Email alert when Chef Joel opens a new special table reservation).',
     },
+    {
+      id: 'doc-references',
+      title: '5. Master Reference Files',
+      content: 'The following specifications have been registered under `/docs` for governance:\n\n• Project Charter: `/docs/00_project/000_PROJECT_CHARTER_v0.1.md`\n• Repository Mapping: `/docs/00_project/001_MVOS_REPOSITORY_STRUCTURE.md`\n• Data Principles: `/docs/03_data/000_MASTER_DATA_PRINCIPLES.md`\n• Security Model: `/docs/09_security/000_SECURITY_AND_PERMISSION_MODEL.md`\n• Roadmap Sprints: `/docs/10_roadmap/SPRINT_0_1_FOUNDATION_TASKS.md`',
+    },
   ]
 
   return (
