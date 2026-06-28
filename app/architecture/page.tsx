@@ -1,4 +1,6 @@
 
+import Link from 'next/link'
+
 export default function ArchitecturePage() {
   const sections = [
     {
@@ -76,6 +78,13 @@ export default function ArchitecturePage() {
               <div className="text-xs text-foreground/85 leading-relaxed whitespace-pre-line font-sans">
                 {sec.content}
               </div>
+              {sec.id === 'capabilities' && (
+                <div className="pt-2">
+                  <Link href="/architecture/business-capability" className="text-xs text-gold hover:underline font-semibold">
+                    Xem chi tiết: Bản đồ năng lực doanh nghiệp →
+                  </Link>
+                </div>
+              )}
             </section>
           ))}
         </div>
