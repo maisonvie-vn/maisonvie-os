@@ -44,6 +44,7 @@ export const vi = {
   adr: 'Quyết định kiến trúc',
   release: 'Phiên bản phát hành',
   changeRequest: 'Yêu cầu thay đổi',
+  ceoDashboard: 'Dashboard CEO',
 } as const
 
 export type Translations = typeof vi

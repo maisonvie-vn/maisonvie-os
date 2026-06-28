@@ -9,6 +9,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
 
   const tabs = [
     { name: 'Tổng quan', href: '/studio' },
+    { name: vi.ceoDashboard, href: '/studio/ceo-dashboard' },
     { name: vi.epic, href: '/studio/epics' },
     { name: vi.feature, href: '/studio/features' },
     { name: vi.spec, href: '/studio/specifications' },
