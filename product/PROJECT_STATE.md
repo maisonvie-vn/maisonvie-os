@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0030 added Inventory Movement Foundation to record stock movements (goods received from suppliers, manual adjustments, waste/spoilage, staff meals, and internal usage) without doing valuation, costing, WAC, or food cost calculation. The implementation remains single-branch, non-AI, and does not introduce stock-on-hand tables, costing ledgers, pricing history, VAT calculation, invoice management, payment tracking, accounting integration, or forecasting. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0031 added Inventory Stock Balance Foundation to display read-only stock levels grouped by ingredient and unit, derived from inventory movements. The implementation remains single-branch, non-AI, and does not introduce WAC, food cost, recipe costing, inventory valuation, stock_on_hand tables, direct stock editing, unit conversion, or accounting integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -34,3 +34,4 @@ TASK-0030 added Inventory Movement Foundation to record stock movements (goods r
 * **TASK-0028**: Purchase Order Foundation
 * **TASK-0029**: Goods Receipt Foundation
 * **TASK-0030**: Inventory Movement Foundation
+* **TASK-0031**: Inventory Stock Balance Foundation
