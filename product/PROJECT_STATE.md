@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0022 added Menu Catalog Foundation to manage structured menu catalogs and menu items for Maison Vie, including menu types, status, effective dates, multilingual item names, allergy/dietary notes, service notes, kitchen notes, and display order. The implementation remains single-branch, non-AI, and does not introduce recipes, ingredients, food cost, inventory, pricing, margin, menu performance analytics, or POS integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0023 added Recipe Foundation to manage structured standard recipes linked optionally to menu items, including recipe type, status, version, yield, portion, method, plating notes, kitchen notes, allergy/dietary notes, storage notes, and ingredient lines with quantity/unit. The implementation remains single-branch, non-AI, and does not introduce food cost, WAC, inventory integration, stock movement, supplier integration, pricing, margin, recipe cost rollup, or POS integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -26,3 +26,4 @@ TASK-0022 added Menu Catalog Foundation to manage structured menu catalogs and m
 * **TASK-0020**: Tour Group Booking Operations Foundation
 * **TASK-0021**: Private Dining & Event Operations Foundation
 * **TASK-0022**: Menu Catalog Foundation
+* **TASK-0023**: Recipe Foundation

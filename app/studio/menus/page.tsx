@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
+import Link from 'next/link'
 
 export type MenuType =
   | "a_la_carte"
@@ -1347,6 +1348,16 @@ function MenusPageContent() {
                         <p className="text-foreground/85 italic">&ldquo;{selectedItem.serviceNote}&rdquo;</p>
                       </div>
                     )}
+                  </div>
+
+                  <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                    <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Bản chuẩn chế biến (BOH)</span>
+                    <Link
+                      href={`/studio/recipes?menu_item_id=${selectedItem.id}`}
+                      className="w-full rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
+                    >
+                      🍳 Xem công thức món
+                    </Link>
                   </div>
 
                   <div className="text-[9px] text-foreground/40 font-mono border-t border-gold-border/10 pt-3 flex justify-between">

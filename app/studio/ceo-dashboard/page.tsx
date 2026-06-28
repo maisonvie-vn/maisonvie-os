@@ -107,6 +107,11 @@ interface MenuItem {
   status: string
 }
 
+interface Recipe {
+  id: string
+  status: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -120,6 +125,7 @@ export default function CEODashboardPage() {
   const [privateDiningEvents, setPrivateDiningEvents] = useState<PrivateDiningEvent[]>([])
   const [menus, setMenus] = useState<MenuCatalog[]>([])
   const [menuItems, setMenuItems] = useState<MenuItem[]>([])
+  const [recipes, setRecipes] = useState<Recipe[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -216,6 +222,13 @@ export default function CEODashboardPage() {
           setMenuItems(JSON.parse(storedItems))
         } else {
           setMenuItems([])
+        }
+
+        const storedRecipes = localStorage.getItem('mvos_recipes')
+        if (storedRecipes) {
+          setRecipes(JSON.parse(storedRecipes))
+        } else {
+          setRecipes([])
         }
 
         setLoading(false)
@@ -396,6 +409,9 @@ export default function CEODashboardPage() {
   // Menu Catalog counts
   const activeMenusCount = menus.filter(m => m.status === 'active').length
   const activeMenuItemsCount = menuItems.filter(i => i.status === 'active').length
+
+  // Recipe counts
+  const activeRecipesCount = recipes.filter(r => r.status === 'active').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -844,6 +860,10 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Món ăn đang áp dụng:</span>
                 <span className="font-bold text-gold">{activeMenuItemsCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Công thức đang chạy:</span>
+                <span className="font-bold text-green-400">{activeRecipesCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -902,9 +922,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/menus"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem thực đơn
+              </Link>
+              <Link
+                href="/studio/recipes"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem danh mục thực đơn
+                Xem công thức món
               </Link>
             </div>
           </div>
