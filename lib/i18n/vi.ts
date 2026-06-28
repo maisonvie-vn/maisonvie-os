@@ -6,6 +6,7 @@ export const vi = {
   architecture: 'Kiến trúc',
   studio: 'Studio',
   reservationsMenu: 'Đặt bàn',
+  emailsMenu: 'Email',
   admin: 'Quản trị',
   settings: 'Cài đặt',
 
