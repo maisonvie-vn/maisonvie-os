@@ -123,6 +123,12 @@ interface RecipeIngredientLine {
   normalizationStatus?: string | null
 }
 
+interface Supplier {
+  id: string
+  status: string
+  priority: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -139,6 +145,7 @@ export default function CEODashboardPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [ingredients, setIngredients] = useState<IngredientMasterItem[]>([])
   const [recipeLines, setRecipeLines] = useState<RecipeIngredientLine[]>([])
+  const [suppliers, setSuppliers] = useState<Supplier[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -256,6 +263,13 @@ export default function CEODashboardPage() {
           setRecipeLines(JSON.parse(storedLines))
         } else {
           setRecipeLines([])
+        }
+
+        const storedSups = localStorage.getItem('mvos_suppliers')
+        if (storedSups) {
+          setSuppliers(JSON.parse(storedSups))
+        } else {
+          setSuppliers([])
         }
 
         setLoading(false)
@@ -447,6 +461,10 @@ export default function CEODashboardPage() {
   // Recipe Ingredient Normalization counts
   const unmappedLinesCount = recipeLines.filter(l => !l.normalizationStatus || l.normalizationStatus === 'unmapped').length
   const needsReviewLinesCount = recipeLines.filter(l => l.normalizationStatus === 'needs_review').length
+
+  // Supplier counts
+  const activeSuppliersCount = suppliers.filter(s => s.status === 'active').length
+  const strategicSuppliersCount = suppliers.filter(s => s.priority === 'strategic').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -915,6 +933,14 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Định lượng cần kiểm tra:</span>
                 <span className="font-bold text-orange-400">{needsReviewLinesCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Nhà cung cấp đang dùng:</span>
+                <span className="font-bold text-green-400">{activeSuppliersCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Nhà cung cấp chiến lược:</span>
+                <span className="font-bold text-purple-400">{strategicSuppliersCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -991,9 +1017,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/normalization"
-                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem chuẩn hóa công thức
+              </Link>
+              <Link
+                href="/studio/suppliers"
+                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem danh mục nhà cung cấp
               </Link>
             </div>
           </div>

@@ -218,6 +218,8 @@ const INITIAL_INGREDIENTS: IngredientMasterItem[] = [
 function IngredientsPageContent() {
   const [ingredients, setIngredients] = useState<IngredientMasterItem[]>([])
   const [selectedIngredient, setSelectedIngredient] = useState<IngredientMasterItem | null>(null)
+  const [suppliers, setSuppliers] = useState<{ id: string; supplierName: string }[]>([])
+  const [capabilities, setCapabilities] = useState<{ id: string; supplierId: string; ingredientMasterId?: string | null; capabilityNote?: string | null }[]>([])
 
   // UX States
   const [loading, setLoading] = useState(true)
@@ -260,6 +262,17 @@ function IngredientsPageContent() {
           setIngredients(INITIAL_INGREDIENTS)
           if (INITIAL_INGREDIENTS.length > 0) setSelectedIngredient(INITIAL_INGREDIENTS[0])
         }
+
+        const storedSups = localStorage.getItem('mvos_suppliers')
+        if (storedSups) {
+          setSuppliers(JSON.parse(storedSups))
+        }
+
+        const storedCaps = localStorage.getItem('mvos_supplier_capabilities')
+        if (storedCaps) {
+          setCapabilities(JSON.parse(storedCaps))
+        }
+
         setLoading(false)
       } catch {
         setError('Không thể tải danh mục nguyên liệu.')
@@ -917,6 +930,25 @@ function IngredientsPageContent() {
                 <div className="bg-background/40 p-2.5 rounded border border-gold-border/10 leading-relaxed space-y-1">
                   {selectedIngredient.allergyNote && <div><span className="font-semibold text-red-400 font-bold">Dị ứng cần lưu ý:</span> {selectedIngredient.allergyNote}</div>}
                   {selectedIngredient.dietaryNote && <div><span className="font-semibold text-foreground/80">Chế độ ăn kiêng:</span> {selectedIngredient.dietaryNote}</div>}
+                </div>
+
+                <div className="border-t border-gold-border/20 pt-4 space-y-2">
+                  <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Nhà cung cấp có thể cung ứng</span>
+                  {capabilities.filter(c => c.ingredientMasterId === selectedIngredient.id).length > 0 ? (
+                    <div className="space-y-1 bg-background/30 p-2.5 rounded border border-gold-border/10">
+                      {capabilities.filter(c => c.ingredientMasterId === selectedIngredient.id).map((cap) => {
+                        const s = suppliers.find(sup => sup.id === cap.supplierId)
+                        return (
+                          <div key={cap.id} className="flex justify-between items-center text-[10px] py-0.5 border-b border-gold-border/5 last:border-0">
+                            <span className="font-bold text-gold">{s ? s.supplierName : 'Nhà cung ứng'}</span>
+                            {cap.capabilityNote && <span className="text-foreground/50 text-[9px] italic">({cap.capabilityNote})</span>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-foreground/45 italic">Chưa có nhà cung cấp nào liên kết với nguyên liệu này.</p>
+                  )}
                 </div>
 
                 <div className="border-t border-gold-border/20 pt-4 space-y-2">
