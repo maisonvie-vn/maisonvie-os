@@ -945,13 +945,21 @@ function PartnersPageContent() {
                 </div>
 
                 <div className="border-t border-gold-border/20 pt-4 space-y-2">
-                  <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Hoạt động lữ hành</span>
-                  <Link
-                    href={`/studio/tours?partner_id=${selectedPartner.id}`}
-                    className="w-full rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block text-center"
-                  >
-                    🚌 Xem đoàn của đối tác
-                  </Link>
+                  <span className="text-[10px] text-foreground/50 font-mono uppercase tracking-wider block">Hoạt động lữ hành & Sự kiện</span>
+                  <div className="grid gap-2 grid-cols-2">
+                    <Link
+                      href={`/studio/tours?partner_id=${selectedPartner.id}`}
+                      className="rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block"
+                    >
+                      🚌 Xem đoàn đối tác
+                    </Link>
+                    <Link
+                      href={`/studio/events?partner_id=${selectedPartner.id}`}
+                      className="rounded border border-gold hover:border-gold-hover px-2 py-2 text-center text-[10px] text-gold hover:bg-gold/10 transition-all font-semibold block"
+                    >
+                      🎉 Xem sự kiện đối tác
+                    </Link>
+                  </div>
                 </div>
 
                 {/* State Actions */}

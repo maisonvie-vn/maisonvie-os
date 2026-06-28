@@ -90,6 +90,13 @@ interface TourGroup {
   operationStatus: string
 }
 
+interface PrivateDiningEvent {
+  id: string
+  eventDate: string
+  status: string
+  operationStatus: string
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -100,6 +107,7 @@ export default function CEODashboardPage() {
   const [dailyReports, setDailyReports] = useState<DailyReport[]>([])
   const [recoveryCases, setRecoveryCases] = useState<GuestRecovery[]>([])
   const [tourGroups, setTourGroups] = useState<TourGroup[]>([])
+  const [privateDiningEvents, setPrivateDiningEvents] = useState<PrivateDiningEvent[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -175,6 +183,13 @@ export default function CEODashboardPage() {
           setTourGroups(JSON.parse(storedTours))
         } else {
           setTourGroups([])
+        }
+
+        const storedEvts = localStorage.getItem('mvos_private_dining_events')
+        if (storedEvts) {
+          setPrivateDiningEvents(JSON.parse(storedEvts))
+        } else {
+          setPrivateDiningEvents([])
         }
 
         setLoading(false)
@@ -347,6 +362,11 @@ export default function CEODashboardPage() {
   const toursPreparingCount = tourGroups.filter(t => t.operationStatus === 'preparing').length
   const toursIssueCount = tourGroups.filter(t => t.operationStatus === 'issue').length
 
+  // Private Dining & Event counts
+  const eventsTodayCount = privateDiningEvents.filter(e => e.eventDate === referenceDateStr).length
+  const eventsPreparingCount = privateDiningEvents.filter(e => e.operationStatus === 'preparing').length
+  const eventsIssueCount = privateDiningEvents.filter(e => e.operationStatus === 'issue').length
+
   // Operational Risks list
   const getOperationalRisks = () => {
     const risks = []
@@ -439,6 +459,15 @@ export default function CEODashboardPage() {
         type: 'danger',
         message: `Có ${toursIssueCount} đoàn tour vận hành gặp sự cố hôm nay!`,
         detail: `Vui lòng kiểm tra lại ghi chú từ bếp hoặc phản hồi của hướng dẫn viên lữ hành.`
+      })
+    }
+
+    // Risk: Private dining events with issues
+    if (eventsIssueCount > 0) {
+      risks.push({
+        type: 'danger',
+        message: `Có ${eventsIssueCount} sự kiện & phòng riêng gặp sự cố hôm nay!`,
+        detail: `Yêu cầu kiểm tra ngay chỉ thị bếp, bố trí phòng và điều phối phục vụ.`
       })
     }
 
@@ -765,6 +794,18 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Đoàn tour gặp sự cố:</span>
                 <span className={`font-bold ${toursIssueCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{toursIssueCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Sự kiện phòng riêng hôm nay:</span>
+                <span className="font-bold text-gold">{eventsTodayCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Sự kiện đang chuẩn bị:</span>
+                <span className="font-bold text-blue-400">{eventsPreparingCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Sự kiện gặp sự cố:</span>
+                <span className={`font-bold ${eventsIssueCount > 0 ? 'text-red-400' : 'text-foreground'}`}>{eventsIssueCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -811,9 +852,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/tours"
-                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
               >
                 Xem đoàn tour
+              </Link>
+              <Link
+                href="/studio/events"
+                className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
+              >
+                Xem sự kiện phòng riêng
               </Link>
             </div>
           </div>

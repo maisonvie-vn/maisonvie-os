@@ -55,6 +55,7 @@ export const vi = {
   recoveryMenu: 'Phục hồi khách',
   partnerMenu: 'Đối tác TA',
   tourMenu: 'Đoàn tour',
+  eventMenu: 'Sự kiện',
 } as const
 
 export type Translations = typeof vi

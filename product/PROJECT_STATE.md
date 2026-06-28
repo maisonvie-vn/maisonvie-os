@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0020 added Tour Group Booking Operations Foundation to manage operational records for tour groups, including agency partner links, optional reservation links, guest count, arrival details, menu notes, allergy notes, guide details, kitchen/service notes, booking status, and operation status. The implementation remains single-branch, non-AI, and does not introduce pricing, VAT/FOC calculation, commission, debt tracking, payment tracking, forecasting, or automatic email sending. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0021 added Private Dining & Event Operations Foundation to manage operational records for private dining, corporate events, birthdays, anniversaries, wine dinners, banquets, and special group events. Event records include optional reservation, partner, and checklist links; guest count; room/setup details; menu, beverage, allergy, decoration, AV, kitchen, and service notes; booking status; and operation status. The implementation remains single-branch, non-AI, and does not introduce pricing, quotation, contract, deposit, payment, debt tracking, forecasting, or automatic email sending. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -24,3 +24,4 @@ TASK-0020 added Tour Group Booking Operations Foundation to manage operational r
 * **TASK-0018**: Guest Recovery & Follow-up Foundation
 * **TASK-0019**: Travel Agency Partner Foundation
 * **TASK-0020**: Tour Group Booking Operations Foundation
+* **TASK-0021**: Private Dining & Event Operations Foundation
