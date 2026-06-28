@@ -36,6 +36,8 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     { name: vi.goodsReceiptMenu, href: '/studio/goods-receipts' },
     { name: vi.inventoryMovementMenu, href: '/studio/inventory-movements' },
     { name: vi.inventoryStockBalanceMenu, href: '/studio/stock-balances' },
+    { name: vi.unitConversionMenu, href: '/studio/conversions' },
+    { name: vi.wacMenu, href: '/studio/wac' },
     { name: 'Từ điển doanh nghiệp', href: '/studio/dictionary' },
     { name: 'Yêu cầu thay đổi', href: '/studio/change-requests' },
   ]

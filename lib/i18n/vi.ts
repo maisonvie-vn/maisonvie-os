@@ -65,6 +65,8 @@ export const vi = {
   goodsReceiptMenu: 'Phiếu nhận hàng',
   inventoryMovementMenu: 'Biến động kho',
   inventoryStockBalanceMenu: 'Tồn kho hiện tại',
+  unitConversionMenu: 'Quy đổi đơn vị',
+  wacMenu: 'Giá vốn bình quân',
 } as const
 
 export type Translations = typeof vi

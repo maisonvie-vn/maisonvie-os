@@ -1,7 +1,7 @@
 # Project State - MVOS Studio
 
 ## Current Status
-TASK-0031 added Inventory Stock Balance Foundation to display read-only stock levels grouped by ingredient and unit, derived from inventory movements. The implementation remains single-branch, non-AI, and does not introduce WAC, food cost, recipe costing, inventory valuation, stock_on_hand tables, direct stock editing, unit conversion, or accounting integration. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
+TASK-0033 added WAC Unit Cost Foundation to compute Weighted Average Cost (WAC) per ingredient based on accepted goods receipts and unit conversions. The implementation remains single-branch, non-AI, and does not calculate recipe cost, menu food cost, accounting COGS, or gross profit margin, and does not integrate invoice/payment workflows or multi-branch code. RFC-0010 remains Proposed and multi-branch implementation remains blocked.
 
 ### Completed Tasks
 * **TASK-0001**: Build MVOS Studio Foundation
@@ -35,3 +35,5 @@ TASK-0031 added Inventory Stock Balance Foundation to display read-only stock le
 * **TASK-0029**: Goods Receipt Foundation
 * **TASK-0030**: Inventory Movement Foundation
 * **TASK-0031**: Inventory Stock Balance Foundation
+* **TASK-0032**: Unit Conversion Foundation
+* **TASK-0033**: WAC Unit Cost Foundation

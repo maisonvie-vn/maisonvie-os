@@ -95,7 +95,7 @@ const INITIAL_RECEIPT_ITEMS: GoodsReceiptItem[] = [
     rejectedQuantity: 0,
     damagedQuantity: 0,
     unit: 'kg',
-    unitPrice: null,
+    unitPrice: 250000,
     issueNote: '',
     createdAt: '2026-06-30 06:00',
     updatedAt: '2026-06-30 06:00'
@@ -111,7 +111,7 @@ const INITIAL_RECEIPT_ITEMS: GoodsReceiptItem[] = [
     rejectedQuantity: 0,
     damagedQuantity: 0,
     unit: 'kg',
-    unitPrice: null,
+    unitPrice: 45000,
     issueNote: '',
     createdAt: '2026-06-30 06:00',
     updatedAt: '2026-06-30 06:00'
