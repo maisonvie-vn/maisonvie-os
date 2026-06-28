@@ -87,6 +87,7 @@ export interface RecipeIngredientLine {
   createdBy?: string | null
   createdAt: string
   updatedAt: string
+  ingredientMasterId?: string | null
 }
 
 interface MenuItem {
@@ -149,6 +150,7 @@ function RecipesPageContent() {
   // UX States
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [masterIngredients, setMasterIngredients] = useState<{ id: string; ingredientNameVi: string; defaultUnit: string; category: string }[]>([])
 
   // Form State: Recipe
   const [recipeForm, setRecipeForm] = useState({
@@ -187,7 +189,8 @@ function RecipesPageContent() {
     unit: 'g',
     preparationNote: '',
     wasteNote: '',
-    optional: false
+    optional: false,
+    ingredientMasterId: ''
   })
 
   const [recipeErrors, setRecipeErrors] = useState<Record<string, string>>({})
@@ -223,6 +226,11 @@ function RecipesPageContent() {
         if (storedMenuItems) {
           loadedItems = JSON.parse(storedMenuItems)
           setMenuItems(loadedItems)
+        }
+
+        const storedMaster = localStorage.getItem('mvos_ingredients')
+        if (storedMaster) {
+          setMasterIngredients(JSON.parse(storedMaster))
         }
 
         // Deep linking or query param matching
@@ -357,6 +365,7 @@ function RecipesPageContent() {
       preparationNote: ingForm.preparationNote || null,
       wasteNote: ingForm.wasteNote || null,
       optional: ingForm.optional,
+      ingredientMasterId: ingForm.ingredientMasterId || null,
       createdAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
       updatedAt: new Date().toISOString().replace('T', ' ').slice(0, 16)
     }
@@ -373,7 +382,8 @@ function RecipesPageContent() {
       unit: 'g',
       preparationNote: '',
       wasteNote: '',
-      optional: false
+      optional: false,
+      ingredientMasterId: ''
     })
   }
 
@@ -1017,6 +1027,40 @@ function RecipesPageContent() {
                   <form onSubmit={handleCreateIngredientLine} className="bg-gold-muted/5 border border-gold-border/10 p-3 rounded space-y-2 mt-2">
                     <span className="text-[9px] text-gold font-bold block">➕ Thêm định lượng nguyên liệu</span>
                     
+                    {masterIngredients.length > 0 && (
+                      <div className="flex flex-col gap-0.5">
+                        <label className="text-[8px] text-foreground/50">Nguyên liệu chuẩn liên quan</label>
+                        <select
+                          value={ingForm.ingredientMasterId}
+                          onChange={(e) => {
+                            const selectedId = e.target.value
+                            if (!selectedId) {
+                              setIngForm(prev => ({ ...prev, ingredientMasterId: '' }))
+                              return
+                            }
+                            const matched = masterIngredients.find(m => m.id === selectedId)
+                            if (matched) {
+                              setIngForm(prev => ({
+                                ...prev,
+                                ingredientMasterId: matched.id,
+                                ingredientName: matched.ingredientNameVi || prev.ingredientName,
+                                unit: matched.defaultUnit || prev.unit,
+                                ingredientCategory: (matched.category as RecipeIngredientCategory) || prev.ingredientCategory
+                              }))
+                            }
+                          }}
+                          className="rounded border border-gold-border/20 bg-background/50 px-2 py-1 text-[10px] focus:outline-none"
+                        >
+                          <option value="">-- Chọn nguyên liệu chuẩn --</option>
+                          {masterIngredients.map((m) => (
+                            <option key={m.id} value={m.id}>
+                              {m.ingredientNameVi} ({m.defaultUnit})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
                     <div className="grid gap-2 grid-cols-2">
                       <div className="flex flex-col gap-0.5">
                         <label className="text-[8px] text-foreground/50">Thứ tự dòng</label>

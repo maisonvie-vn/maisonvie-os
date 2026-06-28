@@ -112,6 +112,12 @@ interface Recipe {
   status: string
 }
 
+interface IngredientMasterItem {
+  id: string
+  status: string
+  allergyNote?: string | null
+}
+
 export default function CEODashboardPage() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [emails, setEmails] = useState<EmailMessage[]>([])
@@ -126,6 +132,7 @@ export default function CEODashboardPage() {
   const [menus, setMenus] = useState<MenuCatalog[]>([])
   const [menuItems, setMenuItems] = useState<MenuItem[]>([])
   const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [ingredients, setIngredients] = useState<IngredientMasterItem[]>([])
   const [dateFilter, setDateFilter] = useState<'today' | 'next_7_days' | 'next_30_days' | 'current_month'>('today')
   
   // UX States
@@ -229,6 +236,13 @@ export default function CEODashboardPage() {
           setRecipes(JSON.parse(storedRecipes))
         } else {
           setRecipes([])
+        }
+
+        const storedIngs = localStorage.getItem('mvos_ingredients')
+        if (storedIngs) {
+          setIngredients(JSON.parse(storedIngs))
+        } else {
+          setIngredients([])
         }
 
         setLoading(false)
@@ -412,6 +426,10 @@ export default function CEODashboardPage() {
 
   // Recipe counts
   const activeRecipesCount = recipes.filter(r => r.status === 'active').length
+
+  // Ingredient Master counts
+  const activeIngredientsCount = ingredients.filter(i => i.status === 'active').length
+  const allergyIngredientsCount = ingredients.filter(i => i.allergyNote && i.allergyNote.trim() !== '').length
 
   // Operational Risks list
   const getOperationalRisks = () => {
@@ -864,6 +882,14 @@ export default function CEODashboardPage() {
                 <span className="text-foreground/60">Công thức đang chạy:</span>
                 <span className="font-bold text-green-400">{activeRecipesCount}</span>
               </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Nguyên liệu đang dùng:</span>
+                <span className="font-bold text-gold">{activeIngredientsCount}</span>
+              </div>
+              <div className="flex justify-between border-b border-gold-border/10 pb-1.5">
+                <span className="text-foreground/60">Nguyên liệu có dị ứng:</span>
+                <span className="font-bold text-red-400">{allergyIngredientsCount}</span>
+              </div>
             </div>
             <div className="grid gap-2 grid-cols-2 pt-1 text-[9px] font-semibold text-center">
               <Link
@@ -928,9 +954,15 @@ export default function CEODashboardPage() {
               </Link>
               <Link
                 href="/studio/recipes"
+                className="rounded border border-gold-border/40 hover:border-gold py-1.5 text-foreground/75 hover:text-gold transition-all"
+              >
+                Xem công thức
+              </Link>
+              <Link
+                href="/studio/ingredients"
                 className="col-span-2 rounded border border-gold/45 hover:border-gold py-1.5 text-gold bg-gold-muted/5 hover:bg-gold/15 transition-all font-semibold"
               >
-                Xem công thức món
+                Xem danh mục nguyên liệu
               </Link>
             </div>
           </div>
